@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wooden Calendar Puzzle Solver</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f2f5;
+            padding: 20px;
+        }
+        h1 { color: #333; margin-bottom: 5px; }
+        p { color: #666; margin-bottom: 20px; }
+        
+        .controls {
+            margin-bottom: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        select, button {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            min-width: 120px;
+            transition: background 0.2s;
+        }
+        button:hover { background-color: #45a049; }
+        button:disabled { background-color: #cccccc; cursor: not-allowed; }
+        
+        #board-container {
+            position: relative;
+            background-color: #e0cca8; /* Wood color */
+            padding: 10px;
+            border-radius: 8px;
+            border: 4px solid #8b5a2b;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        canvas {
+            display: block;
+            background-color: #fdf5e6;
+            border: 2px solid #5c4033;
+        }
+
+        #status {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            font-weight: bold;
+            min-height: 24px;
+            text-align: center;
+        }
+
+        .inventory-container {
+            margin-top: 30px;
+            width: 100%;
+            max-width: 600px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .inventory-container h3 { margin-top: 0; text-align: center; color: #333; }
+        
+        .inventory {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+        .inventory-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 11px;
+            color: #666;
+            width: 60px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Calendar Puzzle Solver</h1>
+    <p>Select a date and click Solve</p>
+
+    <div class="controls">
+        <div>
+            <label>Month:</label>
+            <select id="monthSelect">
+                <option value="Jan">Jan</option><option value="Feb">Feb</option>
+                <option value="Mar">Mar</option><option value="Apr">Apr</option>
+                <option value="May">May</option><option value="Jun">Jun</option>
+                <option value="Jul">Jul</option><option value="Aug">Aug</option>
+                <option value="Sep">Sep</option><option value="Oct">Oct</option>
+                <option value="Nov">Nov</option><option value="Dec">Dec</option>
+            </select>
+        </div>
+
+        <div>
+            <label>Day:</label>
+            <select id="daySelect"></select>
+        </div>
+
+        <button onclick="startSolver()" id="solveBtn">Solve</button>
+    </div>
+
+    <div id="status"></div>
+
+    <div id="board-container">
+        <canvas id="puzzleCanvas" width="350" height="350"></canvas>
+    </div>
+
+    <div class="inventory-container">
+        <h3>Current Pieces (Verify these match yours)</h3>
+        <div id="inventory" class="inventory"></div>
+    </div>
+
+<script>
+    const canvas = document.getElementById('puzzleCanvas');
+    const ctx = canvas.getContext('2d');
+    const CELL_SIZE = 50;
+    const ROWS = 7;
+    const COLS = 7;
+
+    const BOARD_LAYOUT = [
+        [1,1,1,1,1,1,0], // Jan-Jun
+        [1,1,1,1,1,1,0], // Jul-Dec
+        [1,1,1,1,1,1,1], // 1-7
+        [1,1,1,1,1,1,1], // 8-14
+        [1,1,1,1,1,1,1], // 15-21
+        [1,1,1,1,1,1,1], // 22-28
+        [1,1,1,0,0,0,0]  // 29-31
+    ];
+
+    const MONTH_MAP = {
+        'Jan': [0,0], 'Feb': [0,1], 'Mar': [0,2], 'Apr': [0,3], 'May': [0,4], 'Jun': [0,5],
+        'Jul': [1,0], 'Aug': [1,1], 'Sep': [1,2], 'Oct': [1,3], 'Nov': [1,4], 'Dec': [1,5]
+    };
+
+    /**
+     * PIECE DEFINITIONS (Corrected based on photos)
+     * All shapes are defined relative to their top-left-most block (0,0).
+     */
+    const RAW_PIECES = [
+        // 1. Rectangle (2x3)
+        { name: "Rect", color: '#e74c3c', shape: [[0,0],[0,1],[0,2],[1,0],[1,1],[1,2]] },
+        
+        // 2. Corner (V-Shape)
+        { name: "Corner", color: '#8e44ad', shape: [[0,0],[1,0],[2,0],[2,1],[2,2]] },
+        
+        // 3. Long L (4 down, 1 right)
+        { name: "Long L", color: '#3498db', shape: [[0,0],[1,0],[2,0],[3,0],[3,1]] },
+        
+        // 4. U-Shape (C-Shape)
+        { name: "U-Shape", color: '#2ecc71', shape: [[0,0],[1,0],[2,0],[0,1],[2,1]] },
+        
+        // 5. Y-Shape (Line of 4 with a nub)
+        { name: "Y-Shape", color: '#f1c40f', shape: [[0,0],[1,0],[2,0],[3,0],[1,1]] },
+        
+        // 6. P-Shape (Block of 4 with tail)
+        { name: "P-Shape", color: '#1abc9c', shape: [[0,0],[1,0],[0,1],[1,1],[2,0]] },
+
+        // --- NEW CORRECTED PIECES ---
+        
+        // 7. Z-Shape (Standard Z) - From your latest photo (Left Piece)
+        // Top row: 2, Middle row: 1, Bottom row: 2
+        { name: "Z-Shape", color: '#e67e22', shape: [[0,0],[0,1],[1,1],[2,1],[2,2]] },
+
+        // 8. N-Shape (Standard N) - From your latest photo (Right Piece)
+        // Vertical 2, Step, Vertical 2
+        { name: "N-Shape", color: '#34495e', shape: [[0,0],[1,0],[1,1],[2,1],[3,1]] }
+    ];
+
+    let pieces = [];
+
+    function init() {
+        const daySelect = document.getElementById('daySelect');
+        for(let i=1; i<=31; i++) {
+            const opt = document.createElement('option');
+            opt.value = i;
+            opt.innerText = i;
+            daySelect.appendChild(opt);
+        }
+
+        drawInventory();
+        pieces = RAW_PIECES.map(p => generateVariations(p));
+
+        // Debug: Log first piece variations
+        console.log("First piece (Rectangle) variations:");
+        pieces[0].forEach((v, i) => {
+            console.log(`  Variation ${i}:`, JSON.stringify(v.shape));
+        });
+
+        // Calculate total cells
+        const totalCells = BOARD_LAYOUT.flat().filter(x => x === 1).length;
+        const piecesCells = RAW_PIECES.map(p => p.shape.length);
+        const totalPieceCells = piecesCells.reduce((a, b) => a + b, 0);
+        console.log(`Board has ${totalCells} fillable cells`);
+        console.log(`Pieces cover ${totalPieceCells} cells:`, piecesCells);
+        console.log(`After removing 2 date markers: ${totalCells - 2} cells need to be filled`);
+
+        drawBoard(createEmptyBoard());
+    }
+
+    // --- Inventory Visualizer ---
+    function drawInventory() {
+        const container = document.getElementById('inventory');
+        container.innerHTML = "";
+        RAW_PIECES.forEach(p => {
+            const div = document.createElement('div');
+            div.className = 'inventory-item';
+            
+            const cvs = document.createElement('canvas');
+            cvs.width = 60;
+            cvs.height = 60;
+            const c = cvs.getContext('2d');
+            
+            // Normalize for centering
+            let maxR = 0, maxC = 0;
+            p.shape.forEach(([r, col]) => {
+                if(r > maxR) maxR = r;
+                if(col > maxC) maxC = col;
+            });
+
+            const scale = 10;
+            const offsetX = (60 - (maxC+1)*scale) / 2;
+            const offsetY = (60 - (maxR+1)*scale) / 2;
+
+            c.fillStyle = p.color;
+            p.shape.forEach(([r, col]) => {
+                c.fillRect(offsetX + col*scale, offsetY + r*scale, scale-1, scale-1);
+            });
+
+            div.appendChild(cvs);
+            div.appendChild(document.createTextNode(p.name));
+            container.appendChild(div);
+        });
+    }
+
+    // --- Solver Logic ---
+
+    function generateVariations(piece) {
+        let variations = [];
+        let uniqueSignatures = new Set();
+
+        // Try both original and flipped
+        for(let f=0; f<2; f++) {
+            let currentShape = (f === 0) ? piece.shape : flip(piece.shape);
+
+            // Try 4 rotations of each
+            for(let r=0; r<4; r++) {
+                let normalized = normalizeShape(currentShape);
+                let sig = JSON.stringify(normalized);
+
+                if(!uniqueSignatures.has(sig)) {
+                    uniqueSignatures.add(sig);
+                    variations.push({
+                        color: piece.color,
+                        shape: normalized
+                    });
+                }
+                currentShape = rotate90(currentShape);
+            }
+        }
+        return variations;
+    }
+
+    function rotate90(shape) { return shape.map(([r, c]) => [c, -r]); }
+    function flip(shape) { return shape.map(([r, c]) => [r, -c]); }
+    function normalizeShape(shape) {
+        let minR = Infinity, minC = Infinity;
+        shape.forEach(([r, c]) => {
+            if(r < minR) minR = r;
+            if(c < minC) minC = c;
+        });
+        return shape.map(([r, c]) => [r - minR, c - minC]).sort();
+    }
+
+    let isSolving = false;
+    let solveCalls = 0;
+    const MAX_SOLVE_CALLS = 10000000;
+    let usedPieces = [];
+
+    function startSolver() {
+        if(isSolving) return;
+        isSolving = true;
+        solveCalls = 0;
+        usedPieces = new Array(pieces.length).fill(false);
+        document.getElementById('solveBtn').disabled = true;
+        document.getElementById('status').innerText = "Solving...";
+        document.getElementById('status').style.color = "#d32f2f";
+
+        // Allow UI to render before blocking
+        setTimeout(() => {
+            const month = document.getElementById('monthSelect').value;
+            const day = parseInt(document.getElementById('daySelect').value);
+
+            let board = createEmptyBoard();
+
+            // Set Targets
+            const [mR, mC] = MONTH_MAP[month];
+            board[mR][mC] = 2;
+
+            let dR, dC;
+            if (day <= 7) { dR=2; dC=day-1; }
+            else if (day <= 14) { dR=3; dC=day-8; }
+            else if (day <= 21) { dR=4; dC=day-15; }
+            else if (day <= 28) { dR=5; dC=day-22; }
+            else { dR=6; dC=day-29; }
+            board[dR][dC] = 2;
+
+            console.log(`Solving for ${month} ${day}`);
+            console.log("Month cell:", board[mR][mC], "Day cell:", board[dR][dC]);
+            console.log("Number of pieces:", pieces.length);
+            console.log("Variations per piece:", pieces.map(p => p.length));
+
+            const startTime = Date.now();
+            const solution = solveFlexible(board);
+            const elapsed = Date.now() - startTime;
+
+            console.log(`Solve completed in ${elapsed}ms, ${solveCalls} recursive calls`);
+
+            if(solution) {
+                drawBoard(solution);
+                document.getElementById('status').innerText = "Solution Found!";
+                document.getElementById('status').style.color = "green";
+            } else {
+                document.getElementById('status').innerText = "No solution found.";
+                document.getElementById('status').style.color = "red";
+            }
+            isSolving = false;
+            document.getElementById('solveBtn').disabled = false;
+        }, 50);
+    }
+
+// Function to create the initial board state
+function createEmptyBoard() {
+    let board = [];
+    
+    // We iterate 7 rows and 7 columns, which is the maximum grid size.
+    for(let r = 0; r < 7; r++) { 
+        let row = [];
+        for(let c = 0; c < 7; c++) {
+            // Check the BOARD_LAYOUT:
+            if (BOARD_LAYOUT[r] && BOARD_LAYOUT[r][c] === 1) {
+                // If it's a '1' in the layout, it's an empty, fillable slot (0)
+                row.push(0);
+            } else {
+                // Otherwise, it's a wall (0 in layout) or outside the 7x7 grid boundary (-1)
+                row.push(-1); 
+            }
+        }
+        board.push(row);
+    }
+    return board;
+}
+
+    // New solver that tries pieces in any order
+    function solveFlexible(board) {
+        solveCalls++;
+        if(solveCalls > MAX_SOLVE_CALLS) {
+            console.log("Max recursion limit reached");
+            return null;
+        }
+
+        // Find first empty cell
+        let startR = -1, startC = -1;
+        searchLoop:
+        for(let r = 0; r < board.length; r++) {
+            for(let c = 0; c < board[r].length; c++) {
+                if(board[r][c] === 0) {
+                    startR = r;
+                    startC = c;
+                    break searchLoop;
+                }
+            }
+        }
+
+        // No empty cells means we're done!
+        if(startR === -1) {
+            console.log("All pieces placed!");
+            return board;
+        }
+
+        // Try each unused piece
+        for(let pieceIdx = 0; pieceIdx < pieces.length; pieceIdx++) {
+            if(usedPieces[pieceIdx]) continue;
+
+            const currentPieceVars = pieces[pieceIdx];
+
+            // Try every variation
+            for(let v of currentPieceVars) {
+                // Try placing each block of the piece on the empty cell
+                for(let blockIdx = 0; blockIdx < v.shape.length; blockIdx++) {
+                    const [offR, offC] = v.shape[blockIdx];
+                    const baseR = startR - offR;
+                    const baseC = startC - offC;
+
+                    if(canPlace(board, v.shape, baseR, baseC)) {
+                        place(board, v.shape, baseR, baseC, v.color);
+                        usedPieces[pieceIdx] = true;
+
+                        const result = solveFlexible(board);
+                        if(result) return result;
+
+                        // Backtrack
+                        remove(board, v.shape, baseR, baseC);
+                        usedPieces[pieceIdx] = false;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    function canPlace(board, shape, r, c) {
+        for(let [dr, dc] of shape) {
+            const nr = r + dr;
+            const nc = c + dc;
+            if(nr < 0 || nr >= ROWS || nc < 0 || nc >= COLS || board[nr][nc] !== 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function place(board, shape, r, c, id) {
+        for(let [dr, dc] of shape) { board[r+dr][c+dc] = id; }
+    }
+
+    function remove(board, shape, r, c) {
+        for(let [dr, dc] of shape) { board[r+dr][c+dc] = 0; }
+    }
+
+    // --- Drawing ---
+    function drawBoard(board) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.font = "12px Arial";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+
+        const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+        
+        for(let r=0; r<ROWS; r++) {
+            for(let c=0; c<COLS; c++) {
+                let x = c * CELL_SIZE;
+                let y = r * CELL_SIZE;
+
+                if(board[r][c] === -1) {
+                    ctx.fillStyle = "#8b5a2b"; 
+                    ctx.fillRect(x, y, CELL_SIZE, CELL_SIZE);
+                } else if (typeof board[r][c] === 'string') {
+                    ctx.fillStyle = board[r][c];
+                    ctx.fillRect(x+1, y+1, CELL_SIZE-2, CELL_SIZE-2);
+                    ctx.strokeStyle = "rgba(0,0,0,0.1)";
+                    ctx.lineWidth = 2;
+                    ctx.strokeRect(x+2, y+2, CELL_SIZE-4, CELL_SIZE-4);
+                } else if (board[r][c] === 2) {
+                    ctx.fillStyle = "#333";
+                    ctx.fillRect(x, y, CELL_SIZE, CELL_SIZE);
+                    ctx.fillStyle = "#fff";
+                    ctx.font = "bold 14px Arial";
+                } else {
+                    ctx.strokeStyle = "#d7b299";
+                    ctx.strokeRect(x, y, CELL_SIZE, CELL_SIZE);
+                    ctx.fillStyle = "#8b5a2b";
+                }
+
+                // Grid Labels
+                let label = "";
+                if(r===0 && c<6) label = months[c];
+                else if(r===1 && c<6) label = months[c+6];
+                else if(r>=2) {
+                    let dayVal = 0;
+                    if(r===2) dayVal = c+1;
+                    if(r===3) dayVal = c+8;
+                    if(r===4) dayVal = c+15;
+                    if(r===5) dayVal = c+22;
+                    if(r===6 && c<3) dayVal = c+29;
+                    if(dayVal > 0) label = dayVal;
+                }
+
+                if(label) {
+                    if(board[r][c] === 2) { 
+                        ctx.fillStyle = "white";
+                        ctx.fillText(label, x + CELL_SIZE/2, y + CELL_SIZE/2);
+                    } else if (board[r][c] === 0) {
+                        ctx.fillStyle = "rgba(139, 90, 43, 0.5)";
+                        ctx.fillText(label, x + CELL_SIZE/2, y + CELL_SIZE/2);
+                    }
+                }
+            }
+        }
+    }
+
+    init();
+</script>
+</body>
+</html>
