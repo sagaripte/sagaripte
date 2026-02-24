@@ -233,6 +233,7 @@ button.primary {
 .tracks-compare {
   display: grid;
   gap: 8px;
+  margin-bottom: 20px;
 }
 
 .track-line-header {
