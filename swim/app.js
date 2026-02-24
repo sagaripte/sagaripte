@@ -38,7 +38,38 @@ const AppV2 = (() => {
     rebuildDistanceOptions();
     rebuildPresetOptions();
     applyPreset();
+    loadActualTimeForCombo();
     setTimeReadout(0, 0, 0);
+  }
+
+  function comboKey() {
+    return [
+      els.unit.value,
+      els.poolLength.value,
+      els.lapDistance.value,
+      els.stroke.value,
+      els.gender.value,
+      els.ageGroup.value,
+    ].join(':');
+  }
+
+  function loadActualTimeForCombo() {
+    const saved = localStorage.getItem(`swim:actualTime:${comboKey()}`);
+    if (saved !== null) {
+      els.actualTime.value = saved;
+    } else {
+      const ideal = Number(els.idealTime.value);
+      if (ideal > 0) {
+        els.actualTime.value = (ideal + 2).toFixed(2);
+      }
+    }
+  }
+
+  function saveActualTimeForCombo() {
+    const val = els.actualTime.value;
+    if (val && Number(val) > 0) {
+      localStorage.setItem(`swim:actualTime:${comboKey()}`, val);
+    }
   }
 
   function bindEvents() {
@@ -46,25 +77,35 @@ const AppV2 = (() => {
       rebuildPoolOptions();
       rebuildDistanceOptions();
       applyPreset();
+      loadActualTimeForCombo();
     });
 
     els.poolLength.addEventListener('change', () => {
       rebuildDistanceOptions();
       applyPreset();
+      loadActualTimeForCombo();
     });
 
     els.stroke.addEventListener('change', () => {
       filterDistancesForStroke();
       applyPreset();
+      loadActualTimeForCombo();
     });
 
-    els.gender.addEventListener('change', applyPreset);
+    els.gender.addEventListener('change', () => {
+      applyPreset();
+      loadActualTimeForCombo();
+    });
     els.ageGroup.addEventListener('change', () => {
       rebuildPresetOptions();
       applyPreset();
+      loadActualTimeForCombo();
     });
 
-    els.lapDistance.addEventListener('change', applyPreset);
+    els.lapDistance.addEventListener('change', () => {
+      applyPreset();
+      loadActualTimeForCombo();
+    });
     els.preset.addEventListener('change', applyPreset);
 
     els.idealTime.addEventListener('input', () => {
@@ -73,6 +114,7 @@ const AppV2 = (() => {
 
     els.form.addEventListener('submit', (e) => {
       e.preventDefault();
+      saveActualTimeForCombo();
       runSimulation();
     });
 
@@ -147,11 +189,7 @@ const AppV2 = (() => {
     }
 
     if (ref?.[els.preset.value] != null) {
-      const ideal = ref[els.preset.value];
-      els.idealTime.value = ideal.toFixed(2);
-      if (!els.actualTime.value || Number(els.actualTime.value) <= 0) {
-        els.actualTime.value = (ideal * 1.08).toFixed(2);
-      }
+      els.idealTime.value = ref[els.preset.value].toFixed(2);
     }
   }
 
