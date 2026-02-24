@@ -1,0 +1,497 @@
+:root {
+  --bg-deep:    #071525;
+  --bg-panel:   #0d2137;
+  --bg-card:    #112840;
+  --bg-input:   #0a1e32;
+  --accent:     #00e5ff;
+  --accent2:    #00acc1;
+  --accent3:    #0097a7;
+  --text:       #e0f7fa;
+  --text-dim:   #7899ab;
+  --text-muted: #3d6070;
+  --border:     #1a3a55;
+  --border2:    #0f2a40;
+  --green:      #69f0ae;
+  --font-mono:  'Courier New', Courier, monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg-deep);
+  color: var(--text);
+  font-family: var(--font-mono);
+  min-height: 100vh;
+  padding: 0 0 80px;
+}
+
+/* ── Header ──────────────────────────────────────────────────── */
+header {
+  background: linear-gradient(135deg, #0a1e34 0%, #0d2f4a 50%, #091b2e 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 20px 32px;
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+header h1 {
+  font-size: 22px;
+  font-weight: bold;
+  color: var(--accent);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+header p {
+  font-size: 12px;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+}
+
+/* ── Container ───────────────────────────────────────────────── */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ── Form panel ──────────────────────────────────────────────── */
+.form-panel {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px 24px;
+  margin-top: 20px;
+}
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-end;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.form-group label {
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+select, input[type="number"] {
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.2s;
+  min-width: 120px;
+}
+select:focus, input:focus { border-color: var(--accent2); }
+
+.simulate-btn {
+  background: linear-gradient(135deg, var(--accent3), var(--accent2));
+  border: none;
+  color: #000;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 9px 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: filter 0.2s, transform 0.1s;
+}
+.simulate-btn:hover { filter: brightness(1.2); transform: translateY(-1px); }
+.simulate-btn:active { transform: translateY(0); }
+
+/* ── Controls bar ────────────────────────────────────────────── */
+.controls-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+  padding: 12px 18px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.ctrl-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 6px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: background 0.15s, border-color 0.15s;
+}
+.ctrl-btn:hover { background: #1a3a55; border-color: var(--accent3); }
+.ctrl-btn.play-active { border-color: var(--green); color: var(--green); }
+.ctrl-sep { width: 1px; height: 22px; background: var(--border); }
+.speed-label { font-size: 11px; color: var(--text-dim); }
+#speed-select { min-width: 70px; font-size: 12px; padding: 6px 8px; }
+#sim-time-display {
+  margin-left: auto;
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 1px;
+}
+#time-warning {
+  font-size: 11px;
+  color: #ff8f00;
+  display: none;
+}
+
+/* ── Timeline container ──────────────────────────────────────── */
+#timeline-container {
+  margin-top: 18px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px 24px;
+}
+.section-title {
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+/* ── Per-length lap rows ─────────────────────────────────────── */
+#lap-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* One lap-length row (label + bar + details) */
+.lap-row {
+  display: flex;
+  flex-direction: column;
+}
+
+/* The horizontal bar itself */
+.lap-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.lap-label {
+  flex-shrink: 0;
+  width: 52px;
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+  text-align: right;
+}
+
+.lap-bar {
+  flex: 1;
+  display: flex;
+  height: 32px;
+  border-radius: 4px;
+  overflow: visible;  /* allow detail cards to overflow */
+  position: relative;
+}
+
+/* Flipped bar for R→L lengths */
+.lap-bar.rtl {
+  flex-direction: row-reverse;
+}
+
+/* Phase segment inside a lap bar */
+.phase-seg {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  overflow: visible;
+  cursor: pointer;
+  transition: filter 0.15s;
+  flex-shrink: 0;
+}
+.phase-seg:hover { filter: brightness(1.3); z-index: 10; }
+.phase-seg.active {
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,0.9);
+  filter: brightness(1.35);
+  z-index: 5;
+}
+
+/* ── Progress dot ────────────────────────────────────────────── */
+/* A single dot that moves across the active segment each frame.
+   It lives as a child of .phase-seg (position:relative),
+   so left:0%→100% tracks across just that segment. */
+.progress-dot {
+  position: absolute;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #111;
+  border: 2px solid rgba(255,255,255,0.6);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 20;
+  /* left is set via JS */
+}
+
+/* Short label inside the segment (only for wide enough segments) */
+.seg-label {
+  font-size: 9px;
+  font-family: var(--font-mono);
+  font-weight: bold;
+  color: rgba(0,0,0,0.85);
+  letter-spacing: 0.4px;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ── Stroke / kick tick strip ────────────────────────────────── */
+/* A flex row of SVG tick strips, one per phase, sitting between
+   the bar and the text detail strip. */
+.lap-ticks {
+  display: flex;
+  margin-left: 62px;
+  gap: 0;
+  height: 14px;
+  /* direction set inline */
+}
+.phase-ticks {
+  flex-shrink: 0;
+  /* width set inline to match segment */
+  overflow: hidden;
+}
+.phase-ticks svg {
+  display: block;
+  width: 100%;
+  height: 14px;
+}
+
+/* ── Detail strip below each phase segment ────────────────────
+   Rendered as a row of tiny stat chips, aligned to each segment */
+.lap-details {
+  display: flex;
+  /* direction is set inline to match bar direction */
+  margin-left: 62px;   /* align with bar (label width + gap) */
+  padding: 4px 0 10px;
+  gap: 0;
+}
+
+.phase-detail {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 4px 6px 4px 4px;
+  border-left: 2px solid transparent;
+  /* width is set inline to match the phase segment */
+}
+.phase-detail.active {
+  border-left-color: rgba(255,255,255,0.5);
+  background: rgba(255,255,255,0.04);
+  border-radius: 0 3px 3px 0;
+}
+
+.detail-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+.detail-key {
+  font-size: 9px;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  min-width: 22px;
+}
+.detail-val {
+  font-size: 10px;
+  color: var(--accent2);
+  font-weight: bold;
+}
+
+/* ── Turn connector arrow between rows ───────────────────────── */
+.lap-connector {
+  display: flex;
+  align-items: center;
+  margin: 2px 0 2px 62px;
+  gap: 6px;
+}
+.connector-line {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+.connector-arrow {
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+}
+.connector-label {
+  font-size: 9px;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+}
+
+/* ── Summary row ─────────────────────────────────────────────── */
+.lap-summary {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.summary-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.summary-label {
+  font-size: 9px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.summary-val {
+  font-size: 15px;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+/* ── Phase legend ─────────────────────────────────────────────── */
+.phase-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border2);
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  color: var(--text-dim);
+}
+.legend-dot {
+  width: 10px; height: 10px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* ── Placeholder ─────────────────────────────────────────────── */
+.placeholder {
+  text-align: center;
+  padding: 30px;
+  color: var(--text-muted);
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+/* ── Mobile accordion (hidden on desktop) ────────────────────── */
+.mobile-accordion {
+  display: none;
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.25s ease;
+  margin-left: 0;
+  padding: 0 4px;
+}
+.mobile-accordion.open {
+  max-height: 1200px;
+}
+
+.mobile-phase-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 6px;
+  border-bottom: 1px solid var(--border2);
+  border-left: 3px solid transparent;
+  transition: background 0.15s;
+}
+.mobile-phase-row:last-child { border-bottom: none; }
+.mobile-phase-row.active {
+  border-left-color: rgba(255,255,255,0.55);
+  background: rgba(255,255,255,0.04);
+}
+
+.mobile-phase-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.mobile-phase-name {
+  font-size: 11px;
+  font-weight: bold;
+  color: var(--text);
+  letter-spacing: 0.5px;
+  min-width: 36px;
+  padding-top: 1px;
+}
+.mobile-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  flex: 1;
+}
+.mobile-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.mobile-stat-key {
+  font-size: 9px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.mobile-stat-val {
+  font-size: 12px;
+  color: var(--accent2);
+  font-weight: bold;
+}
+
+/* ── Mobile overrides ────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .lap-ticks, .lap-details { display: none; }
+
+  .mobile-accordion { display: block; }
+
+  .lap-bar-wrap { cursor: pointer; user-select: none; }
+
+  /* Chevron on lap label */
+  .lap-label::after {
+    content: ' ▶';
+    font-size: 8px;
+    color: var(--text-muted);
+    display: block;
+    margin-top: 2px;
+  }
+  .lap-row.acc-open .lap-label::after { content: ' ▼'; }
+
+  /* Tighten container padding on small screens */
+  .container { padding: 0 12px; }
+  #timeline-container { padding: 16px 12px; }
+
+  /* Slightly taller bar for easier tapping */
+  .lap-bar, .phase-seg { height: 36px; }
+}
