@@ -283,29 +283,52 @@ const AppV2 = (() => {
     updateActiveView();
   }
 
+  function avgDPS(phases, isYards) {
+    const swimPhases = phases.filter((p) => (p.type === 'swim' || p.type === 'approach') && p.strokeCount > 0 && p.distanceM > 0);
+    const totalDist = swimPhases.reduce((s, p) => s + p.distanceM, 0);
+    const totalStrokes = swimPhases.reduce((s, p) => s + p.strokeCount, 0);
+    if (totalStrokes === 0) return null;
+    const dpsM = totalDist / totalStrokes;
+    return isYards ? dpsM * M_TO_YD : dpsM;
+  }
+
   function renderSummary(compare, isYards) {
     const { ideal, actual } = compare;
     const delta = actual.totalTime - ideal.totalTime;
     const deltaSign = delta > 0 ? '+' : '';
     const unit = isYards ? 'yd' : 'm';
     const paceRefM = isYards ? 100 * YD_TO_M : 100;
+    const raceDistU = toDisplayDistance(actual.totalDistance, isYards);
+    const showPer100 = raceDistU >= 100;
 
     const idealPace = (ideal.totalTime / ideal.totalDistance) * paceRefM;
     const actualPace = (actual.totalTime / actual.totalDistance) * paceRefM;
 
-    const cards = [
+    const idealDPS = avgDPS(ideal.phases, isYards);
+    const actualDPS = avgDPS(actual.phases, isYards);
+
+    const row1 = [
       ['Ideal Time', `${ideal.totalTime.toFixed(2)}s`],
       ['Your Time', `${actual.totalTime.toFixed(2)}s`],
       ['Delta', `${deltaSign}${delta.toFixed(2)}s`],
-      ['Distance', `${toDisplayDistance(actual.totalDistance, isYards).toFixed(0)}${unit}`],
-      [`Ideal Pace / 100${unit}`, `${idealPace.toFixed(2)}s`],
-      [`Your Pace / 100${unit}`, `${actualPace.toFixed(2)}s`],
+      ['Distance', `${raceDistU.toFixed(0)}${unit}`],
     ];
 
-    els.summary.classList.remove('empty');
-    els.summary.innerHTML = cards.map(([k, v]) => (
+    const row2 = [
+      ...(showPer100 ? [[`Ideal Pace / 100${unit}`, `${idealPace.toFixed(2)}s`]] : []),
+      ...(showPer100 ? [[`Your Pace / 100${unit}`, `${actualPace.toFixed(2)}s`]] : []),
+      ...(idealDPS != null ? [[`Ideal DPS`, `${idealDPS.toFixed(2)}${unit}`]] : []),
+      ...(actualDPS != null ? [[`Your DPS`, `${actualDPS.toFixed(2)}${unit}`]] : []),
+    ];
+
+    const cardHtml = (cards) => cards.map(([k, v]) =>
       `<div class="summary-card"><div class="k">${k}</div><div class="v">${v}</div></div>`
-    )).join('');
+    ).join('');
+
+    els.summary.classList.remove('empty');
+    els.summary.innerHTML =
+      `<div class="summary-row">${cardHtml(row1)}</div>` +
+      `<div class="summary-row">${cardHtml(row2)}</div>`;
   }
 
   function renderLanes(compare, poolLengthU) {
