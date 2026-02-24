@@ -333,6 +333,19 @@ function loadCSV(file) {
 
 // ─── Event Wiring ─────────────────────────────
 
+document.getElementById('load-sample-btn').addEventListener('click', () => {
+  fetch('paper-trading-balance-history.csv')
+    .then(r => r.text())
+    .then(text => {
+      allTrades = buildTrades(parseCSV(text));
+      document.getElementById('upload-zone').style.display = 'none';
+      document.getElementById('app').style.display         = 'block';
+      document.getElementById('footer').style.display      = 'block';
+      renderAll(allTrades);
+    })
+    .catch(err => alert('Could not load sample: ' + err.message));
+});
+
 ['file-input-main', 'file-input-header'].forEach(id => {
   document.getElementById(id).addEventListener('change', e => {
     if (e.target.files[0]) loadCSV(e.target.files[0]);
