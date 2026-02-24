@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trading Journal</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg:      #0d0f14;
+    --surface: #161b25;
+    --surface2:#1e2535;
+    --border:  #2a3347;
+    --text:    #e2e8f0;
+    --muted:   #64748b;
+    --accent:  #3b82f6;
+    --green:   #10b981;
+    --red:     #ef4444;
+    --yellow:  #f59e0b;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+    font-size: 13px;
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .logo { font-size: 15px; font-weight: 700; letter-spacing: 0.05em; }
+  .logo span { color: var(--accent); }
+  .header-right { display: flex; align-items: center; gap: 12px; }
+  .date-range { color: var(--muted); font-size: 11px; }
+
+  /* ── Upload zone ── */
+  #upload-zone {
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+    padding: 40px;
+    text-align: center;
+    margin: 24px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  #upload-zone:hover, #upload-zone.drag-over {
+    border-color: var(--accent);
+    background: rgba(59,130,246,0.05);
+  }
+  #upload-zone h2 { font-size: 15px; margin-bottom: 8px; }
+  #upload-zone p  { color: var(--muted); font-size: 12px; }
+
+  .upload-btn {
+    display: inline-block;
+    margin-top: 16px;
+    padding: 8px 20px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: inherit;
+    border: none;
+  }
+  .upload-btn:hover { background: #2563eb; }
+
+  /* ── Main app ── */
+  #app { display: none; padding: 0 24px 40px; }
+
+  /* ── Section titles ── */
+  .section-title {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin: 20px 0 8px;
+  }
+
+  /* ── Stat cards ── */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .stat-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 6px; }
+  .stat-value { font-size: 20px; font-weight: 700; line-height: 1; }
+  .stat-value.green  { color: var(--green); }
+  .stat-value.red    { color: var(--red); }
+  .stat-value.accent { color: var(--accent); }
+  .stat-value.yellow { color: var(--yellow); }
+  .stat-sub { font-size: 10px; color: var(--muted); margin-top: 4px; }
+
+  /* ── Charts ── */
+  .charts-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+  .chart-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+  .chart-title { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 14px; }
+
+  /* ── Daily cards ── */
+  .daily-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .day-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+  .day-card.positive { border-left: 3px solid var(--green); }
+  .day-card.negative { border-left: 3px solid var(--red); }
+  .day-date { font-size: 12px; font-weight: 600; margin-bottom: 6px; }
+  .day-stats { display: flex; gap: 14px; }
+  .day-stat { font-size: 11px; }
+  .day-stat .ds-label { color: var(--muted); }
+
+  /* ── Trade table ── */
+  .table-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .table-header {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .table-title { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+  .trade-count { color: var(--muted); font-size: 11px; }
+  .table-wrap  { overflow-x: auto; }
+
+  .filters { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .filter-label { color: var(--muted); font-size: 11px; }
+  .filter-btn {
+    padding: 5px 14px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--text);
+    font-size: 12px;
+    font-family: inherit;
+    cursor: pointer;
+  }
+  .filter-btn:hover  { border-color: var(--accent); }
+  .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  table { width: 100%; border-collapse: collapse; }
+  th {
+    padding: 9px 12px;
+    text-align: left;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+  }
+  th:hover { color: var(--text); }
+  th .sort-icon { opacity: 0.4; margin-left: 3px; }
+  th.sorted .sort-icon { opacity: 1; color: var(--accent); }
+  td { padding: 9px 12px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--surface2); }
+
+  .badge { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; letter-spacing: 0.04em; }
+  .badge-win   { background: rgba(16,185,129,0.15); color: var(--green); }
+  .badge-loss  { background: rgba(239,68,68,0.15);  color: var(--red); }
+  .badge-long  { background: rgba(59,130,246,0.12); color: var(--accent); }
+  .badge-short { background: rgba(239,68,68,0.12);  color: #f87171; }
+
+  .pnl-pos { color: var(--green); font-weight: 600; }
+  .pnl-neg { color: var(--red);   font-weight: 600; }
+
+  /* ── Footer ── */
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 10px;
+    padding: 20px;
+    border-top: 1px solid var(--border);
+    margin-top: 20px;
+  }
+
+  /* ── Settings panel ── */
+  .settings-btn {
+    display: flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 6px; cursor: pointer; color: var(--muted);
+    font-size: 16px; transition: border-color 0.2s, color 0.2s;
+  }
+  .settings-btn:hover { border-color: var(--accent); color: var(--text); }
+
+  #settings-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5); z-index: 200;
+  }
+  #settings-overlay.open { display: block; }
+
+  #settings-panel {
+    position: fixed; top: 0; right: -400px; width: 380px; height: 100vh;
+    background: var(--surface); border-left: 1px solid var(--border);
+    z-index: 201; display: flex; flex-direction: column;
+    transition: right 0.25s ease;
+    overflow-y: auto;
+  }
+  #settings-panel.open { right: 0; }
+
+  .settings-header {
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .settings-header h2 { font-size: 14px; font-weight: 700; }
+  .settings-close { background: none; border: none; color: var(--muted); font-size: 20px; cursor: pointer; line-height: 1; }
+  .settings-close:hover { color: var(--text); }
+  .settings-body { padding: 20px 24px; flex: 1; }
+  .settings-section { margin-bottom: 28px; }
+  .settings-section-title { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 12px; }
+  .form-group { margin-bottom: 16px; }
+  .form-label { display: block; font-size: 11px; color: var(--muted); margin-bottom: 6px; }
+  .form-input {
+    width: 100%; padding: 8px 12px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 6px; color: var(--text); font-size: 13px;
+    font-family: inherit; outline: none;
+  }
+  .form-input:focus { border-color: var(--accent); }
+  .form-hint { font-size: 10px; color: var(--muted); margin-top: 4px; }
+
+  .instrument-detected {
+    padding: 8px 12px; background: rgba(59,130,246,0.08);
+    border: 1px solid rgba(59,130,246,0.3); border-radius: 6px;
+    font-size: 11px; color: var(--accent); margin-bottom: 12px;
+    display: none;
+  }
+  .instrument-detected.visible { display: block; }
+
+  .instrument-table { width: 100%; border-collapse: collapse; font-size: 11px; margin-top: 8px; }
+  .instrument-table th {
+    text-align: left; padding: 5px 8px;
+    color: var(--muted); font-size: 10px; text-transform: uppercase;
+    letter-spacing: 0.06em; background: none;
+    border-bottom: 1px solid var(--border);
+    cursor: default; user-select: none;
+  }
+  .instrument-table td { padding: 5px 8px; border-bottom: 1px solid rgba(42,51,71,0.5); white-space: nowrap; }
+  .instrument-table tr:last-child td { border-bottom: none; }
+  .instrument-table tr.selected td { color: var(--accent); }
+  .instrument-table tr { cursor: pointer; }
+  .instrument-table tr:hover td { background: var(--surface2); }
+
+  .apply-btn {
+    width: 100%; padding: 10px;
+    background: var(--accent); color: #fff;
+    border: none; border-radius: 6px; cursor: pointer;
+    font-size: 13px; font-family: inherit; font-weight: 600;
+    margin-top: 8px;
+  }
+  .apply-btn:hover { background: #2563eb; }
+
+  /* ── Responsive ── */
+  @media (max-width: 900px) {
+    .stats-bar { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+    .charts-row { grid-template-columns: 1fr; }
+    header { flex-direction: column; gap: 10px; align-items: flex-start; }
+    #settings-panel { width: 100%; right: -100%; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Trading <span>Journal</span></div>
+  <div class="header-right">
+    <span class="date-range" id="date-range-display"></span>
+    <label class="upload-btn" for="file-input-header" style="margin:0;font-size:11px;padding:6px 14px;">Load CSV</label>
+    <input type="file" id="file-input-header" accept=".csv" style="display:none">
+    <button class="settings-btn" id="settings-toggle" title="Settings">⚙</button>
+  </div>
+</header>
+
+<div id="settings-overlay"></div>
+<div id="settings-panel">
+  <div class="settings-header">
+    <h2>Settings</h2>
+    <button class="settings-close" id="settings-close">✕</button>
+  </div>
+  <div class="settings-body">
+
+    <div class="settings-section">
+      <div class="settings-section-title">Account</div>
+      <div class="form-group">
+        <label class="form-label" for="setting-balance">Starting Balance ($)</label>
+        <input type="number" id="setting-balance" class="form-input" value="100000" min="0" step="1000">
+        <div class="form-hint">Used to display account growth %. Leave at 0 to hide.</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="setting-size-threshold">Big Win Threshold ($)</label>
+        <input type="number" id="setting-size-threshold" class="form-input" value="500" min="0" step="50">
+        <div class="form-hint">Splits trades into noise (&lt;threshold) vs. conviction (≥threshold) for edge analysis.</div>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <div class="settings-section-title">Instrument / Point Value</div>
+      <div class="instrument-detected" id="instrument-detected"></div>
+      <div class="form-group">
+        <label class="form-label" for="setting-point-value">Point Value ($/point/contract)</label>
+        <input type="number" id="setting-point-value" class="form-input" value="" min="0.01" step="0.01" placeholder="Auto-detect from symbol">
+        <div class="form-hint">Leave blank to auto-detect from the symbol in your CSV.</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Common Futures</label>
+        <table class="instrument-table" id="instrument-table">
+          <thead>
+            <tr>
+              <th>Instrument</th>
+              <th>Tick</th>
+              <th>Tick $</th>
+              <th>$/Point</th>
+            </tr>
+          </thead>
+          <tbody id="instrument-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <button class="apply-btn" id="settings-apply">Apply &amp; Reload</button>
+  </div>
+</div>
+
+<div id="upload-zone">
+  <h2>Drop your trading CSV here</h2>
+  <p>TradingView: Balance History · Account History · Order History<br>
+     AMP / Rithmic: Order History &amp; more</p>
+  <label class="upload-btn" for="file-input-main">Browse File</label>
+  <input type="file" id="file-input-main" accept=".csv" style="display:none">
+</div>
+
+<div id="app">
+
+  <div class="section-title" style="margin-top:16px">Returns</div>
+  <div class="stats-bar" id="bar-returns"></div>
+
+  <div class="section-title">How the Edge Works</div>
+  <div class="stats-bar" id="bar-edge"></div>
+
+  <div class="section-title">Capital Management</div>
+  <div class="stats-bar" id="bar-trust"></div>
+
+  <div class="section-title">Directional Breakdown</div>
+  <div class="stats-bar" id="bar-direction"></div>
+
+  <div class="section-title">Charts</div>
+  <div class="charts-row" style="grid-template-columns:2fr 1fr;margin-top:0">
+    <div class="chart-card">
+      <div class="chart-title">Cumulative P&amp;L (Net)</div>
+      <div style="position:relative;height:220px"><canvas id="equity-chart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Daily P&amp;L</div>
+      <div style="position:relative;height:220px"><canvas id="daily-chart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="charts-row" style="grid-template-columns:1fr 1fr 1fr;margin-top:10px">
+    <div class="chart-card">
+      <div class="chart-title">P&amp;L Distribution</div>
+      <div style="position:relative;height:180px"><canvas id="dist-chart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">P&amp;L by Hour (UTC)</div>
+      <div style="position:relative;height:180px"><canvas id="hourly-chart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Avg P&amp;L by Day of Week <span style="font-size:9px;opacity:0.6">(per session)</span></div>
+      <div style="position:relative;height:180px"><canvas id="dow-chart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="section-title">Daily Breakdown</div>
+  <div class="daily-row" id="daily-cards"></div>
+
+  <div class="table-card">
+    <div class="table-header">
+      <div class="table-title">Round-Trip Trade Log</div>
+      <div class="filters">
+        <div class="filter-label">Filter:</div>
+        <button class="filter-btn" data-filter="all">All</button>
+        <button class="filter-btn active" data-filter="win">Wins</button>
+        <button class="filter-btn" data-filter="loss">Losses</button>
+        <button class="filter-btn" data-filter="long">Long</button>
+        <button class="filter-btn" data-filter="short">Short</button>
+        <span class="trade-count" id="trade-count"></span>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th data-col="date">Date <span class="sort-icon">↕</span></th>
+            <th data-col="direction">Dir <span class="sort-icon">↕</span></th>
+            <th data-col="qty">Qty <span class="sort-icon">↕</span></th>
+            <th data-col="entry">Entry <span class="sort-icon">↕</span></th>
+            <th data-col="exit">Exit <span class="sort-icon">↕</span></th>
+            <th data-col="points">Points <span class="sort-icon">↕</span></th>
+            <th data-col="gross">Gross P&amp;L <span class="sort-icon">↕</span></th>
+            <th data-col="commission">Comm. <span class="sort-icon">↕</span></th>
+            <th data-col="net">Net P&amp;L <span class="sort-icon">↕</span></th>
+            <th data-col="duration">Duration <span class="sort-icon">↕</span></th>
+            <th data-col="result">Result <span class="sort-icon">↕</span></th>
+          </tr>
+        </thead>
+        <tbody id="trade-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<footer id="footer" style="display:none">
+  Trading Journal · <span id="footer-instrument"></span> · Open source
+</footer>
+
+<script src="trading.js"></script>
+<script src="stats.js"></script>
+<script src="charts.js"></script>
+<script src="ui.js"></script>
+</body>
+</html>

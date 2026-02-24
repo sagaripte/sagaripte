@@ -1,0 +1,228 @@
+Time,Balance Before,Balance After,Realized P&L (value),Realized P&L (currency),Action
+2026-02-24 15:51:44,108809.99999999993,108804.99999999993,-5,USD,"Commission for: Close long position for symbol CME_MINI:NQ1! at price 25061.25 for 2 units. Position AVG Price was 25007.500000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-24 15:51:44,106659.99999999993,108809.99999999993,2150,USD,"Close long position for symbol CME_MINI:NQ1! at price 25061.25 for 2 units. Position AVG Price was 25007.500000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-24 15:41:09,106664.99999999993,106659.99999999993,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 25007.50 for 2 units
+2026-02-24 15:40:38,106669.99999999993,106664.99999999993,-5,USD,"Commission for: Close short position for symbol CME_MINI:NQ1! at price 25009.50 for 2 units. Position AVG Price was 25005.500000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-24 15:40:38,106829.99999999993,106669.99999999993,-160,USD,"Close short position for symbol CME_MINI:NQ1! at price 25009.50 for 2 units. Position AVG Price was 25005.500000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-24 15:32:21,106834.99999999993,106829.99999999993,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 25005.50 for 2 units
+2026-02-24 15:08:24,106839.99999999993,106834.99999999993,-5,USD,"Commission for: Close long position for symbol CME_MINI:NQ1! at price 25004.75 for 2 units. Position AVG Price was 25021.000000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-24 15:08:24,107489.99999999993,106839.99999999993,-650,USD,"Close long position for symbol CME_MINI:NQ1! at price 25004.75 for 2 units. Position AVG Price was 25021.000000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-24 14:54:40,107494.99999999993,107489.99999999993,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 25021.00 for 2 units
+2026-02-24 14:29:27,107499.99999999993,107494.99999999993,-5,USD,"Commission for: Close short position for symbol CME_MINI:NQ1! at price 25001.50 for 2 units. Position AVG Price was 25014.000000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-24 14:29:27,106999.99999999993,107499.99999999993,500,USD,"Close short position for symbol CME_MINI:NQ1! at price 25001.50 for 2 units. Position AVG Price was 25014.000000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-24 14:28:02,107004.99999999993,106999.99999999993,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 25014.00 for 2 units
+2026-02-24 14:09:04,107009.99999999993,107004.99999999993,-5,USD,"Commission for: Close long position for symbol CME_MINI:NQ1! at price 25027.75 for 2 units. Position AVG Price was 25032.500000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-24 14:09:04,107199.99999999993,107009.99999999993,-190,USD,"Close long position for symbol CME_MINI:NQ1! at price 25027.75 for 2 units. Position AVG Price was 25032.500000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-24 14:07:03,107204.99999999993,107199.99999999993,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 25032.50 for 2 units
+2026-02-24 14:06:15,107209.99999999993,107204.99999999993,-5,USD,"Commission for: Close long position for symbol CME_MINI:NQ1! at price 25029.00 for 2 units. Position AVG Price was 25031.250000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-24 14:06:15,107299.99999999993,107209.99999999993,-90,USD,"Close long position for symbol CME_MINI:NQ1! at price 25029.00 for 2 units. Position AVG Price was 25031.250000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-24 14:04:36,107304.99999999993,107299.99999999993,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 25031.25 for 2 units
+2026-02-24 13:02:42,107309.99999999993,107304.99999999993,-5,USD,"Commission for: Close short position for symbol CME_MINI:NQ1! at price 25071.00 for 2 units. Position AVG Price was 25051.750000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-24 13:02:42,108079.99999999993,107309.99999999993,-770,USD,"Close short position for symbol CME_MINI:NQ1! at price 25071.00 for 2 units. Position AVG Price was 25051.750000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-24 12:57:46,108084.99999999993,108079.99999999993,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 25051.75 for 2 units
+2026-02-24 12:42:34,108089.99999999993,108084.99999999993,-5,USD,"Commission for: Close short position for symbol CME_MINI:NQ1! at price 25056.75 for 2 units. Position AVG Price was 25057.500000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-24 12:42:34,108059.99999999993,108089.99999999993,30,USD,"Close short position for symbol CME_MINI:NQ1! at price 25056.75 for 2 units. Position AVG Price was 25057.500000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-24 12:40:03,108064.99999999993,108059.99999999993,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 25057.50 for 2 units
+2026-02-24 12:37:23,108069.99999999993,108064.99999999993,-5,USD,"Commission for: Close short position for symbol CME_MINI:NQ1! at price 25060.75 for 2 units. Position AVG Price was 25064.250000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-24 12:37:23,107929.99999999993,108069.99999999993,140,USD,"Close short position for symbol CME_MINI:NQ1! at price 25060.75 for 2 units. Position AVG Price was 25064.250000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-24 12:35:26,107934.99999999993,107929.99999999993,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 25064.25 for 2 units
+2026-02-24 12:34:06,107939.99999999993,107934.99999999993,-5,USD,"Commission for: Close short position for symbol CME_MINI:NQ1! at price 25065.50 for 2 units. Position AVG Price was 25064.250000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-24 12:34:06,107989.99999999993,107939.99999999993,-50,USD,"Close short position for symbol CME_MINI:NQ1! at price 25065.50 for 2 units. Position AVG Price was 25064.250000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-24 12:33:39,107994.99999999993,107989.99999999993,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 25064.25 for 2 units
+2026-02-24 11:54:20,107999.99999999993,107994.99999999993,-5,USD,"Commission for: Close long position for symbol CME_MINI:NQ1! at price 25029.25 for 2 units. Position AVG Price was 24992.500000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-24 11:54:20,106529.99999999993,107999.99999999993,1470,USD,"Close long position for symbol CME_MINI:NQ1! at price 25029.25 for 2 units. Position AVG Price was 24992.500000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-24 11:45:31,106534.99999999993,106529.99999999993,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24992.50 for 2 units
+2026-02-24 11:44:41,106539.99999999993,106534.99999999993,-5,USD,"Commission for: Close short position for symbol CME_MINI:NQ1! at price 24993.75 for 2 units. Position AVG Price was 24991.750000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-24 11:44:41,106619.99999999993,106539.99999999993,-80,USD,"Close short position for symbol CME_MINI:NQ1! at price 24993.75 for 2 units. Position AVG Price was 24991.750000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-24 11:44:02,106624.99999999993,106619.99999999993,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24991.75 for 2 units
+2026-02-24 10:18:16,106629.99999999993,106624.99999999993,-5,USD,"Commission for: Close long position for symbol CME_MINI:NQ1! at price 24860.25 for 2 units. Position AVG Price was 24848.250000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-24 10:18:16,106149.99999999993,106629.99999999993,480,USD,"Close long position for symbol CME_MINI:NQ1! at price 24860.25 for 2 units. Position AVG Price was 24848.250000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-24 10:05:31,106154.99999999993,106149.99999999993,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24848.25 for 2 units
+2026-02-24 10:04:44,106159.99999999993,106154.99999999993,-5,USD,"Commission for: Close long position for symbol CME_MINI:NQ1! at price 24840.00 for 2 units. Position AVG Price was 24845.750000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-24 10:04:44,106389.99999999993,106159.99999999993,-230,USD,"Close long position for symbol CME_MINI:NQ1! at price 24840.00 for 2 units. Position AVG Price was 24845.750000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-24 10:00:30,106394.99999999993,106389.99999999993,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24845.75 for 2 units
+2026-02-24 09:39:05,106402.49999999993,106394.99999999993,-7.5,USD,"Commission for: Close long position for symbol CME_MINI:NQ1! at price 24807.75 for 3 units. Position AVG Price was 24736.750000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-24 09:39:05,102142.49999999993,106402.49999999993,4260,USD,"Close long position for symbol CME_MINI:NQ1! at price 24807.75 for 3 units. Position AVG Price was 24736.750000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-24 09:38:16,102149.99999999993,102142.49999999993,-7.5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24736.75 for 3 units
+2026-02-24 09:36:36,102157.49999999993,102149.99999999993,-7.5,USD,"Commission for: Close long position for symbol CME_MINI:NQ1! at price 24701.25 for 3 units. Position AVG Price was 24793.916667, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-24 09:36:36,107717.5,102157.49999999993,-5560.000000000073,USD,"Close long position for symbol CME_MINI:NQ1! at price 24701.25 for 3 units. Position AVG Price was 24793.916667, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-24 09:31:57,107720,107717.5,-2.5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24762.00 for 1 units
+2026-02-24 09:31:21,107722.5,107720,-2.5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24795.75 for 1 units
+2026-02-24 09:25:07,107725,107722.5,-2.5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24824.00 for 1 units
+2026-02-23 15:55:59,107730,107725,-5,USD,"Commission for: Close long position for symbol CME_MINI:NQ1! at price 24723.75 for 2 units. Position AVG Price was 24722.000000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-23 15:55:59,107660,107730,70,USD,"Close long position for symbol CME_MINI:NQ1! at price 24723.75 for 2 units. Position AVG Price was 24722.000000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-23 15:45:24,107665,107660,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24722.00 for 2 units
+2026-02-23 14:02:16,107670,107665,-5,USD,"Commission for: Close long position for symbol CME_MINI:NQ1! at price 24734.00 for 2 units. Position AVG Price was 24725.750000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-23 14:02:16,107340,107670,330,USD,"Close long position for symbol CME_MINI:NQ1! at price 24734.00 for 2 units. Position AVG Price was 24725.750000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-23 13:58:37,107345,107340,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24725.75 for 2 units
+2026-02-23 11:39:59,107350,107345,-5,USD,"Commission for: Close short position for symbol CME_MINI:NQ1! at price 24761.00 for 2 units. Position AVG Price was 24763.750000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-23 11:39:59,107240,107350,110,USD,"Close short position for symbol CME_MINI:NQ1! at price 24761.00 for 2 units. Position AVG Price was 24763.750000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-23 11:39:18,107245,107240,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24763.75 for 2 units
+2026-02-23 11:19:30,107250,107245,-5,USD,"Commission for: Close long position for symbol CME_MINI:NQ1! at price 24712.25 for 2 units. Position AVG Price was 24709.750000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-23 11:19:30,107150,107250,100,USD,"Close long position for symbol CME_MINI:NQ1! at price 24712.25 for 2 units. Position AVG Price was 24709.750000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-23 11:18:44,107155,107150,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24709.75 for 2 units
+2026-02-23 10:10:24,107160,107155,-5,USD,"Commission for: Close short position for symbol CME_MINI:NQ1! at price 24874.00 for 2 units. Position AVG Price was 24923.000000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-23 10:10:24,105200,107160,1960,USD,"Close short position for symbol CME_MINI:NQ1! at price 24874.00 for 2 units. Position AVG Price was 24923.000000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-23 10:03:16,105205,105200,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24923.00 for 2 units
+2026-02-23 10:01:10,105210,105205,-5,USD,"Commission for: Close short position for symbol CME_MINI:NQ1! at price 24923.75 for 2 units. Position AVG Price was 24914.000000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-23 10:01:10,105600,105210,-390,USD,"Close short position for symbol CME_MINI:NQ1! at price 24923.75 for 2 units. Position AVG Price was 24914.000000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-23 09:59:44,105605,105600,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24914.00 for 2 units
+2026-02-23 09:57:14,105610,105605,-5,USD,"Commission for: Close short position for symbol CME_MINI:NQ1! at price 24941.00 for 2 units. Position AVG Price was 24926.000000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-23 09:57:14,106210,105610,-600,USD,"Close short position for symbol CME_MINI:NQ1! at price 24941.00 for 2 units. Position AVG Price was 24926.000000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-23 09:57:11,106215,106210,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24926.00 for 2 units
+2026-02-23 09:47:42,106220,106215,-5,USD,"Commission for: Close long position for symbol CME_MINI:NQ1! at price 24922.00 for 2 units. Position AVG Price was 24916.750000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-23 09:47:42,106010,106220,210,USD,"Close long position for symbol CME_MINI:NQ1! at price 24922.00 for 2 units. Position AVG Price was 24916.750000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-23 09:41:40,106015,106010,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24916.75 for 2 units
+2026-02-20 15:21:50,106020,106015,-5,USD,"Commission for: Close long position for symbol CME_MINI:NQ1! at price 25029.00 for 2 units. Position AVG Price was 25038.250000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-20 15:21:50,106390,106020,-370,USD,"Close long position for symbol CME_MINI:NQ1! at price 25029.00 for 2 units. Position AVG Price was 25038.250000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-20 15:04:14,106395,106390,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 25038.25 for 2 units
+2026-02-20 14:37:51,106400,106395,-5,USD,"Commission for: Close long position for symbol CME_MINI:NQ1! at price 25046.75 for 2 units. Position AVG Price was 25056.500000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-20 14:37:51,106790,106400,-390,USD,"Close long position for symbol CME_MINI:NQ1! at price 25046.75 for 2 units. Position AVG Price was 25056.500000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-20 14:37:02,106795,106790,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 25056.50 for 2 units
+2026-02-20 14:35:44,106800,106795,-5,USD,"Commission for: Close long position for symbol CME_MINI:NQ1! at price 25051.50 for 2 units. Position AVG Price was 25065.250000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-20 14:35:44,107350,106800,-550,USD,"Close long position for symbol CME_MINI:NQ1! at price 25051.50 for 2 units. Position AVG Price was 25065.250000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-20 14:33:27,107355,107350,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 25065.25 for 2 units
+2026-02-20 14:26:08,107360,107355,-5,USD,"Commission for: Close long position for symbol CME_MINI:NQ1! at price 25058.00 for 2 units. Position AVG Price was 25072.000000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-20 14:26:08,107920,107360,-560,USD,"Close long position for symbol CME_MINI:NQ1! at price 25058.00 for 2 units. Position AVG Price was 25072.000000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-20 14:22:40,107925,107920,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 25072.00 for 2 units
+2026-02-20 11:07:30,107930,107925,-5,USD,"Commission for: Close short position for symbol CME_MINI:NQ1! at price 25109.25 for 2 units. Position AVG Price was 25116.250000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-20 11:07:30,107650,107930,280,USD,"Close short position for symbol CME_MINI:NQ1! at price 25109.25 for 2 units. Position AVG Price was 25116.250000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-20 11:06:21,107655,107650,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 25116.25 for 2 units
+2026-02-20 10:33:44,107660,107655,-5,USD,"Commission for: Close short position for symbol CME_MINI:NQ1! at price 24911.50 for 2 units. Position AVG Price was 24988.500000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-20 10:33:44,104580,107660,3080,USD,"Close short position for symbol CME_MINI:NQ1! at price 24911.50 for 2 units. Position AVG Price was 24988.500000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-20 10:31:49,104585,104580,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24988.50 for 2 units
+2026-02-20 10:26:41,104590,104585,-5,USD,"Commission for: Close short position for symbol CME_MINI:NQ1! at price 25019.50 for 2 units. Position AVG Price was 24990.750000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-20 10:26:41,105740,104590,-1150,USD,"Close short position for symbol CME_MINI:NQ1! at price 25019.50 for 2 units. Position AVG Price was 24990.750000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-20 10:25:48,105745,105740,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24990.75 for 2 units
+2026-02-20 10:21:17,105750,105745,-5,USD,"Commission for: Close short position for symbol CME_MINI:NQ1! at price 24982.75 for 2 units. Position AVG Price was 24968.750000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-20 10:21:17,106310,105750,-560,USD,"Close short position for symbol CME_MINI:NQ1! at price 24982.75 for 2 units. Position AVG Price was 24968.750000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-20 10:20:03,106315,106310,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24968.75 for 2 units
+2026-02-20 10:09:56,106320,106315,-5,USD,"Commission for: Close long position for symbol CME_MINI:NQ1! at price 24978.25 for 2 units. Position AVG Price was 24973.500000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-20 10:09:56,106130,106320,190,USD,"Close long position for symbol CME_MINI:NQ1! at price 24978.25 for 2 units. Position AVG Price was 24973.500000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-20 10:04:42,106135,106130,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24973.50 for 2 units
+2026-02-19 15:52:07,106140,106135,-5,USD,"Commission for: Close long position for symbol CME_MINI:NQ1! at price 24819.50 for 2 units. Position AVG Price was 24805.250000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-19 15:52:07,105570,106140,570,USD,"Close long position for symbol CME_MINI:NQ1! at price 24819.50 for 2 units. Position AVG Price was 24805.250000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-19 15:20:26,105575,105570,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24805.25 for 2 units
+2026-02-19 15:20:14,105580,105575,-5,USD,"Commission for: Close short position for symbol CME_MINI:NQ1! at price 24803.75 for 2 units. Position AVG Price was 24795.000000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-19 15:20:14,105930,105580,-350,USD,"Close short position for symbol CME_MINI:NQ1! at price 24803.75 for 2 units. Position AVG Price was 24795.000000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-19 15:14:41,105935,105930,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24795.00 for 2 units
+2026-02-19 15:12:36,105940,105935,-5,USD,"Commission for: Close short position for symbol CME_MINI:NQ1! at price 24806.50 for 2 units. Position AVG Price was 24801.500000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-19 15:12:36,106140,105940,-200,USD,"Close short position for symbol CME_MINI:NQ1! at price 24806.50 for 2 units. Position AVG Price was 24801.500000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-19 15:07:38,106145,106140,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24801.50 for 2 units
+2026-02-19 15:02:12,106150,106145,-5,USD,"Commission for: Close short position for symbol CME_MINI:NQ1! at price 24796.75 for 2 units. Position AVG Price was 24792.000000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-19 15:02:12,106340,106150,-190,USD,"Close short position for symbol CME_MINI:NQ1! at price 24796.75 for 2 units. Position AVG Price was 24792.000000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-19 14:56:07,106345,106340,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24792.00 for 2 units
+2026-02-19 14:36:29,106347.5,106345,-2.5,USD,"Commission for: Close long position for symbol CME_MINI:NQ1! at price 24803.25 for 1 units. Position AVG Price was 24812.500000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-19 14:36:29,106532.5,106347.5,-185,USD,"Close long position for symbol CME_MINI:NQ1! at price 24803.25 for 1 units. Position AVG Price was 24812.500000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-19 14:31:31,106535,106532.5,-2.5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24812.50 for 1 units
+2026-02-19 14:29:32,106537.5,106535,-2.5,USD,"Commission for: Close long position for symbol CME_MINI:NQ1! at price 24797.75 for 1 units. Position AVG Price was 24815.250000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-19 14:29:32,106887.5,106537.5,-350,USD,"Close long position for symbol CME_MINI:NQ1! at price 24797.75 for 1 units. Position AVG Price was 24815.250000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-19 14:14:11,106890,106887.5,-2.5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24815.25 for 1 units
+2026-02-19 13:54:41,106892.5,106890,-2.5,USD,"Commission for: Close short position for symbol CME_MINI:NQ1! at price 24815.50 for 1 units. Position AVG Price was 24772.250000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-19 13:54:41,107757.5,106892.5,-865,USD,"Close short position for symbol CME_MINI:NQ1! at price 24815.50 for 1 units. Position AVG Price was 24772.250000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-19 13:22:41,107760,107757.5,-2.5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24772.25 for 1 units
+2026-02-19 13:10:19,107762.5,107760,-2.5,USD,"Commission for: Close short position for symbol CME_MINI:NQ1! at price 24804.25 for 1 units. Position AVG Price was 24814.500000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-19 13:10:19,107557.5,107762.5,205,USD,"Close short position for symbol CME_MINI:NQ1! at price 24804.25 for 1 units. Position AVG Price was 24814.500000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-19 12:51:15,107560,107557.5,-2.5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24814.50 for 1 units
+2026-02-19 12:05:12,107562.5,107560,-2.5,USD,"Commission for: Close short position for symbol CME_MINI:NQ1! at price 24822.00 for 1 units. Position AVG Price was 24851.000000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-19 12:05:12,106982.5,107562.5,580,USD,"Close short position for symbol CME_MINI:NQ1! at price 24822.00 for 1 units. Position AVG Price was 24851.000000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-19 11:58:13,106985,106982.5,-2.5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24851.00 for 1 units
+2026-02-19 11:35:35,106987.5,106985,-2.5,USD,"Commission for: Close short position for symbol CME_MINI:NQ1! at price 24897.50 for 1 units. Position AVG Price was 24913.750000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-19 11:35:35,106662.5,106987.5,325,USD,"Close short position for symbol CME_MINI:NQ1! at price 24897.50 for 1 units. Position AVG Price was 24913.750000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-19 11:32:32,106665,106662.5,-2.5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24913.75 for 1 units
+2026-02-19 11:31:00,106670,106665,-5,USD,"Commission for: Close long position for symbol CME_MINI:NQ1! at price 24894.25 for 2 units. Position AVG Price was 24902.250000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-19 11:31:00,106990,106670,-320,USD,"Close long position for symbol CME_MINI:NQ1! at price 24894.25 for 2 units. Position AVG Price was 24902.250000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-19 11:28:29,106992.5,106990,-2.5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24887.75 for 1 units
+2026-02-19 11:27:41,106995,106992.5,-2.5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24916.75 for 1 units
+2026-02-19 11:09:30,106997.5,106995,-2.5,USD,"Commission for: Close short position for symbol CME_MINI:NQ1! at price 24892.00 for 1 units. Position AVG Price was 24883.250000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-19 11:09:30,107172.5,106997.5,-175,USD,"Close short position for symbol CME_MINI:NQ1! at price 24892.00 for 1 units. Position AVG Price was 24883.250000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-19 11:09:04,107175,107172.5,-2.5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24883.25 for 1 units
+2026-02-19 10:52:45,107177.5,107175,-2.5,USD,"Commission for: Close long position for symbol CME_MINI:NQ1! at price 24881.75 for 1 units. Position AVG Price was 24852.750000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-19 10:52:45,106597.5,107177.5,580,USD,"Close long position for symbol CME_MINI:NQ1! at price 24881.75 for 1 units. Position AVG Price was 24852.750000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-19 10:30:01,106600,106597.5,-2.5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24852.75 for 1 units
+2026-02-19 10:06:31,106605,106600,-5,USD,"Commission for: Close long position for symbol CME_MINI:NQ1! at price 24916.00 for 2 units. Position AVG Price was 24813.250000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-19 10:06:31,102495,106605,4110,USD,"Close long position for symbol CME_MINI:NQ1! at price 24916.00 for 2 units. Position AVG Price was 24813.250000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-19 09:49:33,102500,102495,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24813.25 for 2 units
+2026-02-19 09:47:25,102505,102500,-5,USD,"Commission for: Close short position for symbol CME_MINI:NQ1! at price 24817.50 for 2 units. Position AVG Price was 24814.750000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-19 09:47:25,102615,102505,-110,USD,"Close short position for symbol CME_MINI:NQ1! at price 24817.50 for 2 units. Position AVG Price was 24814.750000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-19 09:46:51,102620,102615,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24814.75 for 2 units
+2026-02-19 09:45:34,102625,102620,-5,USD,"Commission for: Close long position for symbol CME_MINI:NQ1! at price 24805.50 for 2 units. Position AVG Price was 24819.000000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-19 09:45:34,103165,102625,-540,USD,"Close long position for symbol CME_MINI:NQ1! at price 24805.50 for 2 units. Position AVG Price was 24819.000000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-19 09:45:22,103170,103165,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24819.00 for 2 units
+2026-02-19 09:41:51,103175,103170,-5,USD,"Commission for: Close short position for symbol CME_MINI:NQ1! at price 24789.25 for 2 units. Position AVG Price was 24818.750000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-19 09:41:51,101995,103175,1180,USD,"Close short position for symbol CME_MINI:NQ1! at price 24789.25 for 2 units. Position AVG Price was 24818.750000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-19 09:37:32,102000,101995,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24818.75 for 2 units
+2026-02-19 09:36:01,102005,102000,-5,USD,"Commission for: Close long position for symbol CME_MINI:NQ1! at price 24807.00 for 2 units. Position AVG Price was 24826.000000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-19 09:36:01,102765,102005,-760,USD,"Close long position for symbol CME_MINI:NQ1! at price 24807.00 for 2 units. Position AVG Price was 24826.000000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-19 09:35:00,102770,102765,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24826.00 for 2 units
+2026-02-19 09:33:53,102775,102770,-5,USD,"Commission for: Close long position for symbol CME_MINI:NQ1! at price 24854.75 for 2 units. Position AVG Price was 24866.250000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-19 09:33:53,103235,102775,-460,USD,"Close long position for symbol CME_MINI:NQ1! at price 24854.75 for 2 units. Position AVG Price was 24866.250000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-19 09:31:09,103240,103235,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24866.25 for 2 units
+2026-02-19 09:27:09,103245,103240,-5,USD,"Commission for: Close long position for symbol CME_MINI:NQ1! at price 24845.50 for 2 units. Position AVG Price was 24853.500000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-19 09:27:09,103565,103245,-320,USD,"Close long position for symbol CME_MINI:NQ1! at price 24845.50 for 2 units. Position AVG Price was 24853.500000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-19 09:26:37,103570,103565,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24853.50 for 2 units
+2026-02-18 14:52:56,103575,103570,-5,USD,"Commission for: Close short position for symbol CME_MINI:NQ1! at price 24910.25 for 2 units. Position AVG Price was 25000.500000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-18 14:52:56,99965,103575,3610,USD,"Close short position for symbol CME_MINI:NQ1! at price 24910.25 for 2 units. Position AVG Price was 25000.500000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-18 14:28:21,99970,99965,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 25000.50 for 2 units
+2026-02-18 14:27:29,99975,99970,-5,USD,"Commission for: Close long position for symbol CME_MINI:NQ1! at price 24996.50 for 2 units. Position AVG Price was 25006.500000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-18 14:27:29,100375,99975,-400,USD,"Close long position for symbol CME_MINI:NQ1! at price 24996.50 for 2 units. Position AVG Price was 25006.500000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-18 14:26:23,100380,100375,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 25006.50 for 2 units
+2026-02-18 14:22:44,100385,100380,-5,USD,"Commission for: Close short position for symbol CME_MINI:NQ1! at price 25016.25 for 2 units. Position AVG Price was 25023.250000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-18 14:22:44,100105,100385,280,USD,"Close short position for symbol CME_MINI:NQ1! at price 25016.25 for 2 units. Position AVG Price was 25023.250000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-18 14:06:24,100110,100105,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 25023.25 for 2 units
+2026-02-18 14:06:05,100115,100110,-5,USD,"Commission for: Close long position for symbol CME_MINI:NQ1! at price 25021.50 for 2 units. Position AVG Price was 25031.000000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-18 14:06:05,100495,100115,-380,USD,"Close long position for symbol CME_MINI:NQ1! at price 25021.50 for 2 units. Position AVG Price was 25031.000000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-18 14:05:12,100500,100495,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 25031.00 for 2 units
+2026-02-18 14:04:59,100505,100500,-5,USD,"Commission for: Close short position for symbol CME_MINI:NQ1! at price 25030.75 for 2 units. Position AVG Price was 25022.250000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-18 14:04:59,100845,100505,-340,USD,"Close short position for symbol CME_MINI:NQ1! at price 25030.75 for 2 units. Position AVG Price was 25022.250000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-18 14:03:32,100850,100845,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 25022.25 for 2 units
+2026-02-18 13:59:30,100855,100850,-5,USD,"Commission for: Close short position for symbol CME_MINI:NQ1! at price 25024.50 for 2 units. Position AVG Price was 25019.500000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-18 13:59:30,101055,100855,-200,USD,"Close short position for symbol CME_MINI:NQ1! at price 25024.50 for 2 units. Position AVG Price was 25019.500000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-18 13:58:05,101060,101055,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 25019.50 for 2 units
+2026-02-18 13:56:53,101065,101060,-5,USD,"Commission for: Close short position for symbol CME_MINI:NQ1! at price 25031.50 for 2 units. Position AVG Price was 25031.750000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-18 13:56:53,101055,101065,10,USD,"Close short position for symbol CME_MINI:NQ1! at price 25031.50 for 2 units. Position AVG Price was 25031.750000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-18 13:56:52,101060,101055,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 25031.75 for 2 units
+2026-02-18 13:12:10,101065,101060,-5,USD,"Commission for: Close long position for symbol CME_MINI:NQ1! at price 25082.50 for 2 units. Position AVG Price was 25090.750000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-18 13:12:10,101395,101065,-330,USD,"Close long position for symbol CME_MINI:NQ1! at price 25082.50 for 2 units. Position AVG Price was 25090.750000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-18 12:50:25,101400,101395,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 25090.75 for 2 units
+2026-02-18 12:47:28,101405,101400,-5,USD,"Commission for: Close short position for symbol CME_MINI:NQ1! at price 25093.50 for 2 units. Position AVG Price was 25099.250000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-18 12:47:28,101175,101405,230,USD,"Close short position for symbol CME_MINI:NQ1! at price 25093.50 for 2 units. Position AVG Price was 25099.250000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-18 12:27:35,101180,101175,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 25099.25 for 2 units
+2026-02-18 12:26:56,101185,101180,-5,USD,"Commission for: Close long position for symbol CME_MINI:NQ1! at price 25095.75 for 2 units. Position AVG Price was 25097.000000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-18 12:26:56,101235,101185,-50,USD,"Close long position for symbol CME_MINI:NQ1! at price 25095.75 for 2 units. Position AVG Price was 25097.000000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-18 12:25:15,101240,101235,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 25097.00 for 2 units
+2026-02-18 12:17:31,101245,101240,-5,USD,"Commission for: Close short position for symbol CME_MINI:NQ1! at price 25098.00 for 2 units. Position AVG Price was 25091.000000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-18 12:17:31,101525,101245,-280,USD,"Close short position for symbol CME_MINI:NQ1! at price 25098.00 for 2 units. Position AVG Price was 25091.000000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-18 12:17:10,101530,101525,-5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 25091.00 for 2 units
+2026-02-18 12:13:12,101535,101530,-5,USD,"Commission for: Close long position for symbol CME_MINI:NQ1! at price 25083.00 for 2 units. Position AVG Price was 25089.750000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-18 12:13:12,101805,101535,-270,USD,"Close long position for symbol CME_MINI:NQ1! at price 25083.00 for 2 units. Position AVG Price was 25089.750000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-18 12:12:47,101807.5,101805,-2.5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 25082.25 for 1 units
+2026-02-18 12:12:00,101810,101807.5,-2.5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 25097.25 for 1 units
+2026-02-18 12:05:13,101812.5,101810,-2.5,USD,"Commission for: Close short position for symbol CME_MINI:NQ1! at price 25106.50 for 1 units. Position AVG Price was 25107.500000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-18 12:05:13,101792.5,101812.5,20,USD,"Close short position for symbol CME_MINI:NQ1! at price 25106.50 for 1 units. Position AVG Price was 25107.500000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-18 11:44:57,101795,101792.5,-2.5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 25107.50 for 1 units
+2026-02-18 10:54:34,101797.5,101795,-2.5,USD,"Commission for: Close short position for symbol CME_MINI:NQ1! at price 25076.25 for 1 units. Position AVG Price was 25067.000000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-18 10:54:34,101982.5,101797.5,-185,USD,"Close short position for symbol CME_MINI:NQ1! at price 25076.25 for 1 units. Position AVG Price was 25067.000000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-18 10:54:15,101985,101982.5,-2.5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 25067.00 for 1 units
+2026-02-18 10:53:43,101990,101985,-5,USD,"Commission for: Close short position for symbol CME_MINI:NQ1! at price 25080.50 for 2 units. Position AVG Price was 25071.375000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-18 10:53:43,102355,101990,-365,USD,"Close short position for symbol CME_MINI:NQ1! at price 25080.50 for 2 units. Position AVG Price was 25071.375000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-18 10:53:29,102357.5,102355,-2.5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 25072.50 for 1 units
+2026-02-18 10:53:25,102360,102357.5,-2.5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 25070.25 for 1 units
+2026-02-18 09:48:53,102362.5,102360,-2.5,USD,"Commission for: Close long position for symbol CME_MINI:NQ1! at price 24809.75 for 1 units. Position AVG Price was 24805.250000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-18 09:48:53,102272.5,102362.5,90,USD,"Close long position for symbol CME_MINI:NQ1! at price 24809.75 for 1 units. Position AVG Price was 24805.250000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-18 09:48:24,102275,102272.5,-2.5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24805.25 for 1 units
+2026-02-18 09:47:00,102277.5,102275,-2.5,USD,"Commission for: Close long position for symbol CME_MINI:NQ1! at price 24856.00 for 1 units. Position AVG Price was 24800.500000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-18 09:47:00,101167.5,102277.5,1110,USD,"Close long position for symbol CME_MINI:NQ1! at price 24856.00 for 1 units. Position AVG Price was 24800.500000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-18 09:39:20,101170,101167.5,-2.5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24800.50 for 1 units
+2026-02-18 09:38:38,101172.5,101170,-2.5,USD,"Commission for: Close short position for symbol CME_MINI:NQ1! at price 24793.25 for 1 units. Position AVG Price was 24800.750000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-18 09:38:38,101022.5,101172.5,150,USD,"Close short position for symbol CME_MINI:NQ1! at price 24793.25 for 1 units. Position AVG Price was 24800.750000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-18 09:35:40,101025,101022.5,-2.5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24800.75 for 1 units
+2026-02-18 09:30:39,101027.5,101025,-2.5,USD,"Commission for: Close short position for symbol CME_MINI:NQ1! at price 24771.00 for 1 units. Position AVG Price was 24835.000000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-18 09:30:39,99747.5,101027.5,1280,USD,"Close short position for symbol CME_MINI:NQ1! at price 24771.00 for 1 units. Position AVG Price was 24835.000000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-18 09:25:21,99750,99747.5,-2.5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24835.00 for 1 units
+2026-02-18 09:25:00,99752.5,99750,-2.5,USD,"Commission for: Close long position for symbol CME_MINI:NQ1! at price 24831.75 for 1 units. Position AVG Price was 24837.500000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-18 09:25:00,99867.5,99752.5,-115,USD,"Close long position for symbol CME_MINI:NQ1! at price 24831.75 for 1 units. Position AVG Price was 24837.500000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-18 09:24:06,99870,99867.5,-2.5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24837.50 for 1 units
+2026-02-18 09:24:01,99872.5,99870,-2.5,USD,"Commission for: Close short position for symbol CME_MINI:NQ1! at price 24841.50 for 1 units. Position AVG Price was 24835.250000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-18 09:24:01,99997.5,99872.5,-125,USD,"Close short position for symbol CME_MINI:NQ1! at price 24841.50 for 1 units. Position AVG Price was 24835.250000, currency: USD, rate: 1.000000, point value: 20.000000"
+2026-02-18 09:23:40,100000,99997.5,-2.5,USD,Commission for: Enter position for symbol CME_MINI:NQ1! at price 24835.25 for 1 units
