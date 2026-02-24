@@ -298,8 +298,6 @@ const AppV2 = (() => {
     const deltaSign = delta > 0 ? '+' : '';
     const unit = isYards ? 'yd' : 'm';
     const paceRefM = isYards ? 100 * YD_TO_M : 100;
-    const raceDistU = toDisplayDistance(actual.totalDistance, isYards);
-    const showPer100 = raceDistU >= 100;
 
     const idealPace = (ideal.totalTime / ideal.totalDistance) * paceRefM;
     const actualPace = (actual.totalTime / actual.totalDistance) * paceRefM;
@@ -311,12 +309,12 @@ const AppV2 = (() => {
       ['Ideal Time', `${ideal.totalTime.toFixed(2)}s`],
       ['Your Time', `${actual.totalTime.toFixed(2)}s`],
       ['Delta', `${deltaSign}${delta.toFixed(2)}s`],
-      ['Distance', `${raceDistU.toFixed(0)}${unit}`],
+      ['Distance', `${toDisplayDistance(actual.totalDistance, isYards).toFixed(0)}${unit}`],
     ];
 
     const row2 = [
-      ...(showPer100 ? [[`Ideal Pace / 100${unit}`, `${idealPace.toFixed(2)}s`]] : []),
-      ...(showPer100 ? [[`Your Pace / 100${unit}`, `${actualPace.toFixed(2)}s`]] : []),
+      [`Ideal Pace / 100${unit}`, `${idealPace.toFixed(2)}s`],
+      [`Your Pace / 100${unit}`, `${actualPace.toFixed(2)}s`],
       ...(idealDPS != null ? [[`Ideal DPS`, `${idealDPS.toFixed(2)}${unit}`]] : []),
       ...(actualDPS != null ? [[`Your DPS`, `${actualDPS.toFixed(2)}${unit}`]] : []),
     ];
