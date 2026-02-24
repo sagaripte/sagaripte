@@ -65,7 +65,7 @@ function renderBarReturns(stats) {
       `Per trade · ${stats.rMultiple.toFixed(2)}R vs avg loss`),
     card('Sortino Ratio',
       val(isFinite(stats.sortino) ? stats.sortino.toFixed(2) : '∞', sorCls),
-      'Penalises only downside vol — right for this style'),
+      'Penalises only downside vol'),
     card('Commission',
       val(`$${Math.abs(stats.totalComm).toFixed(0)}`, '', '17px'),
       `${stats.commPctOfGrossWins.toFixed(1)}% of gross wins · ${stats.tradeCount} round-trips`,
