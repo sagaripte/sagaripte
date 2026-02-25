@@ -1,11 +1,11 @@
 // charts.js — Chart.js equity curve, daily P&L, hourly, day-of-week, and distribution charts
 // Depends on: stats.js (fmtDate, dateKey), Chart.js global
 
-let equityChart = null;
-let dailyChart  = null;
-let hourlyChart = null;
-let dowChart    = null;
-let distChart   = null;
+let equityChart  = null;
+let dailyChart   = null;
+let sessionChart = null;
+let dowChart     = null;
+let distChart    = null;
 
 const CHART_DEFAULTS = {
   responsive: true,
@@ -55,11 +55,11 @@ function renderCharts(trades, stats) {
   const dailyLabels = Object.keys(dailyMap).sort();
   const dailyValues = dailyLabels.map(k => Math.round(dailyMap[k] * 100) / 100);
 
-  if (equityChart) equityChart.destroy();
-  if (dailyChart)  dailyChart.destroy();
-  if (hourlyChart) hourlyChart.destroy();
-  if (dowChart)    dowChart.destroy();
-  if (distChart)   distChart.destroy();
+  if (equityChart)  equityChart.destroy();
+  if (dailyChart)   dailyChart.destroy();
+  if (sessionChart) sessionChart.destroy();
+  if (dowChart)     dowChart.destroy();
+  if (distChart)    distChart.destroy();
 
   const eCtx = document.getElementById('equity-chart').getContext('2d');
   equityChart = new Chart(eCtx, {
@@ -105,38 +105,6 @@ function renderCharts(trades, stats) {
     },
   });
 
-  // ── Hourly P&L ───────────────────────────────
-  const hourlyMap = {};
-  for (const t of trades) {
-    const h = t.date.getUTCHours();
-    hourlyMap[h] = (hourlyMap[h] || 0) + t.netPnl;
-  }
-  const allHours = Array.from({ length: 24 }, (_, i) => i)
-    .filter(h => hourlyMap[h] !== undefined);
-  const hourlyLabels = allHours.map(h => `${String(h).padStart(2,'0')}:00`);
-  const hourlyValues = allHours.map(h => Math.round(hourlyMap[h] * 100) / 100);
-
-  const hCtx = document.getElementById('hourly-chart').getContext('2d');
-  hourlyChart = new Chart(hCtx, {
-    type: 'bar',
-    data: {
-      labels: hourlyLabels,
-      datasets: [{
-        data: hourlyValues,
-        backgroundColor: hourlyValues.map(barColor),
-        borderColor:     hourlyValues.map(barBorder),
-        borderWidth: 1,
-        borderRadius: 4,
-      }],
-    },
-    options: {
-      ...CHART_DEFAULTS,
-      scales: {
-        x: { ticks: { color: '#64748b', font: { size: 10 } }, grid: { color: '#2a3347' } },
-        y: SCALE_DEFAULTS.y,
-      },
-    },
-  });
 
   // ── Day-of-week P&L (avg per session) ───────
   // Group trades by calendar date first, sum P&L per date,

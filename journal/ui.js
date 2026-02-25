@@ -46,88 +46,65 @@ function val(v, cls, size) {
 // ─── ROW 1: Returns ───────────────────────────
 
 function renderBarReturns(stats) {
-  const growth = settings.balance > 0
-    ? `${((stats.totalNet / settings.balance) * 100).toFixed(2)}% account growth`
+  const avgDailyPct = settings.balance > 0 ? (stats.avgDailyPnl / settings.balance) * 100 : 0;
+  const totalPct    = settings.balance > 0 ? (stats.totalNet    / settings.balance) * 100 : 0;
+  const growthSub   = settings.balance > 0
+    ? `avg ${avgDailyPct.toFixed(2)}%/day · ${totalPct.toFixed(1)}% over ${stats.tradingDays}d`
     : `Gross: ${fmtPnl(stats.totalGross)}`;
   const pfStr = isFinite(stats.profitFactor) ? stats.profitFactor.toFixed(2) : '∞';
   const pfCls  = stats.profitFactor >= 1.5 ? 'green' : stats.profitFactor >= 1 ? 'yellow' : 'red';
-  const sorCls = stats.sortino >= 1 ? 'green' : stats.sortino >= 0 ? 'yellow' : 'red';
+  const wrCls  = stats.winRate >= 55 ? 'green' : stats.winRate >= 45 ? 'yellow' : 'red';
+  const skewCls = stats.winLossSkew >= 1.5 ? 'green' : stats.winLossSkew >= 1.0 ? 'yellow' : 'red';
 
   document.getElementById('bar-returns').innerHTML = [
     card('Net P&L',
       val(fmtPnl(stats.totalNet), sign(stats.totalNet)),
-      growth),
+      growthSub),
     card('Profit Factor',
       val(pfStr, pfCls),
       `${fmtPnl(stats.totalGross)} gross · ${stats.tradeCount} trades`),
-    card('Expectancy',
-      val(fmt$(stats.expectancy), sign(stats.expectancy)),
-      `Per trade · ${stats.rMultiple.toFixed(2)}R vs avg loss`),
-    card('Sortino Ratio',
-      val(isFinite(stats.sortino) ? stats.sortino.toFixed(2) : '∞', sorCls),
-      'Penalises only downside vol'),
+    card('Win Rate',
+      val(`${stats.winRate.toFixed(1)}%`, wrCls),
+      `${stats.winCount}W / ${stats.lossCount}L · avg win ${fmt$(stats.avgWin)} / avg loss ${fmt$(stats.avgLoss)}`),
+    card('Avg Win / Avg Loss',
+      val(`${isFinite(stats.winLossSkew) ? stats.winLossSkew.toFixed(2) : '∞'}×`, skewCls),
+      `Expectancy ${fmt$(stats.expectancy)} per trade · ${stats.rMultiple.toFixed(2)}R`),
     card('Commission',
       val(`$${Math.abs(stats.totalComm).toFixed(0)}`, '', '17px'),
-      `${stats.commPctOfGrossWins.toFixed(1)}% of gross wins · ${stats.tradeCount} round-trips`,
+      `${stats.commPctOfGrossWins.toFixed(1)}% of gross wins · worst loss ${fmt$(stats.maxLoss)}`,
       'muted'),
   ].join('');
 }
 
-// ─── ROW 2: How the Edge Works ────────────────
+// ─── ROW 2: Intraday Behavior ─────────────────
 
-function renderBarEdge(stats) {
-  const skewCls = stats.winLossSkew >= 1.5 ? 'green' : stats.winLossSkew >= 1.0 ? 'yellow' : 'red';
-  const slugCls = stats.sluggingPct >= 50  ? 'green' : stats.sluggingPct >= 30  ? 'yellow' : 'red';
-  const wo3cls  = sign(stats.top3NetWithout);
-  const baseCls = sign(stats.baseNet);
+function renderBarIntraday(stats) {
+  const recCls   = stats.recoveryRate >= 60 ? 'green' : stats.recoveryRate >= 40 ? 'yellow' : 'red';
+  const g2pCls   = stats.gainToPain >= 2 ? 'green' : stats.gainToPain >= 1 ? 'yellow' : 'red';
+  const dayWrCls = (stats.profitableDays / stats.tradingDays) * 100 >= 60 ? 'green'
+                 : (stats.profitableDays / stats.tradingDays) * 100 >= 50 ? 'yellow' : 'red';
+  const sharpeCls = stats.sharpe >= 1 ? 'green' : stats.sharpe >= 0.5 ? 'yellow' : 'red';
 
-  document.getElementById('bar-edge').innerHTML = [
-    card('Win/Loss Skew',
-      val(`${isFinite(stats.winLossSkew) ? stats.winLossSkew.toFixed(2) : '∞'}×`, skewCls),
-      `Avg win ${fmtPnl(stats.avgWin)} ÷ avg loss ${fmtPnl(stats.avgLoss)}`),
-    card('Slugging %',
-      val(`${stats.sluggingPct.toFixed(0)}%`, slugCls),
-      `${stats.bigWinCount} big wins ≥$${stats.sizeThreshold} = ${fmt$(stats.bigWinTotal)} of gross wins`),
-    card('Noise Cost',
-      val(fmt$(stats.noiseCost), 'red'),
-      `${stats.smallStats.count} small trades · avg ${fmt$(stats.smallStats.avg)}`),
-    card('Strip Top 3 Wins',
-      val(fmt$(stats.top3NetWithout), wo3cls, '16px'),
-      `Top 3 = ${stats.top3PctOfTotal.toFixed(0)}% of all P&L · still ${stats.top3NetWithout >= 0 ? 'profitable' : 'negative'}`),
-    card('Base P&L (no big wins)',
-      val(fmt$(stats.baseNet), baseCls),
-      `What&apos;s left when the big wins don&apos;t land`),
-  ].join('');
-}
-
-// ─── ROW 3: Capital Trustworthiness ──────────
-
-function renderBarTrust(stats) {
-  const dayWr       = stats.tradingDays ? (stats.profitableDays / stats.tradingDays) * 100 : 0;
-  const calmarCls   = stats.calmar    >= 2 ? 'green' : stats.calmar    >= 1 ? 'yellow' : 'red';
-  const rddCls      = stats.returnOnDD >= 2 ? 'green' : stats.returnOnDD >= 1 ? 'yellow' : 'red';
-  const g2pCls      = stats.gainToPain >= 2 ? 'green' : stats.gainToPain >= 1 ? 'yellow' : 'red';
-  const dayWrCls    = dayWr >= 60 ? 'green' : dayWr >= 50 ? 'yellow' : 'red';
-  const worstDayCls = stats.dayAsymmetry <= 0.75 ? 'green' : stats.dayAsymmetry <= 1 ? 'yellow' : 'red';
-
-  document.getElementById('bar-trust').innerHTML = [
-    card('Calmar Ratio',
-      val(fmtR(stats.calmar), calmarCls),
-      `Ann. return ÷ max DD · &gt;1 solid · &gt;2 excellent`),
-    card('Return / Max DD',
-      val(`${fmtR(stats.returnOnDD)}×`, rddCls),
-      `Earned ${fmtR(stats.returnOnDD)}× back vs worst hole ($${stats.maxDD.toFixed(0)})`),
+  document.getElementById('bar-intraday').innerHTML = [
+    card('Day Win Rate',
+      val(`${((stats.profitableDays / stats.tradingDays) * 100).toFixed(0)}%`, dayWrCls),
+      `${stats.profitableDays} green / ${stats.tradingDays} days · avg ${fmt$(stats.avgDailyPnl)}/day`),
     card('Gain-to-Pain',
       val(fmtR(stats.gainToPain), g2pCls),
       `Net P&amp;L ÷ sum of losing days · &gt;1 = edge`),
-    card('Day Win Rate',
-      val(`${dayWr.toFixed(0)}%`, dayWrCls),
-      `${stats.profitableDays} green days / ${stats.tradingDays} traded · best ${fmt$(stats.bestDay)}`),
-    card('Worst Day / Recovery',
-      val(fmt$(stats.worstDay), worstDayCls),
-      `Ratio vs best: ${stats.dayAsymmetry.toFixed(2)} · DD recovered in ${stats.ddWorstDays < 0 ? 'N/A' : stats.ddWorstDays + 'd / ' + stats.ddWorstTrades + ' trades'}`),
+    card('Sharpe Ratio',
+      val(isFinite(stats.sharpe) ? stats.sharpe.toFixed(2) : '∞', sharpeCls),
+      `Daily P&L series · ${stats.tradingDays}d · mean ÷ std dev`),
+    card('Avg Intraday DD',
+      val(fmt$(-stats.avgIntradayDD), 'red', '17px'),
+      `Max single session: ${fmt$(-stats.maxIntradayDD)}`),
+    card('Recovery Rate',
+      val(`${stats.recoveryRate.toFixed(0)}%`, recCls),
+      `${stats.recoveredDays}/${stats.wentNegDays} neg. sessions recovered · 1st trade WR ${stats.firstTradeWR.toFixed(0)}%`),
   ].join('');
 }
+
+// ─── ROW 3: Capital Management — removed, merged into Intraday Behavior ──────
 
 // ─── ROW 4: Directional ──────────────────────
 
@@ -279,8 +256,7 @@ function renderAll(trades) {
   if (!stats) return;
 
   renderBarReturns(stats);
-  renderBarEdge(stats);
-  renderBarTrust(stats);
+  renderBarIntraday(stats);
   renderBarDirection(stats);
   renderCharts(trades, stats);
   renderDailyCards(trades);
