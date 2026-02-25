@@ -46,10 +46,9 @@ function val(v, cls, size) {
 // ─── ROW 1: Returns ───────────────────────────
 
 function renderBarReturns(stats) {
-  const avgDailyPct = settings.balance > 0 ? (stats.avgDailyPnl / settings.balance) * 100 : 0;
-  const totalPct    = settings.balance > 0 ? (stats.totalNet    / settings.balance) * 100 : 0;
-  const growthSub   = settings.balance > 0
-    ? `avg ${avgDailyPct.toFixed(2)}%/day · ${totalPct.toFixed(1)}% over ${stats.tradingDays}d`
+  const totalPct  = settings.balance > 0 ? (stats.totalNet / settings.balance) * 100 : 0;
+  const growthSub = settings.balance > 0
+    ? `${totalPct >= 0 ? '+' : ''}${totalPct.toFixed(1)}% on $${settings.balance.toLocaleString()} · ${stats.tradingDays}d`
     : `Gross: ${fmtPnl(stats.totalGross)}`;
   const pfStr = isFinite(stats.profitFactor) ? stats.profitFactor.toFixed(2) : '∞';
   const pfCls  = stats.profitFactor >= 1.5 ? 'green' : stats.profitFactor >= 1 ? 'yellow' : 'red';
@@ -68,7 +67,7 @@ function renderBarReturns(stats) {
       `${stats.winCount}W / ${stats.lossCount}L · avg win ${fmt$(stats.avgWin)} / avg loss ${fmt$(stats.avgLoss)}`),
     card('Avg Win / Avg Loss',
       val(`${isFinite(stats.winLossSkew) ? stats.winLossSkew.toFixed(2) : '∞'}×`, skewCls),
-      `Expectancy ${fmt$(stats.expectancy)} per trade · ${stats.rMultiple.toFixed(2)}R`),
+      `Avg P&L ${fmt$(stats.expectancy)} per trade · edge ratio ${stats.rMultiple.toFixed(2)}×`),
     card('Commission',
       val(`$${Math.abs(stats.totalComm).toFixed(0)}`, '', '17px'),
       `${stats.commPctOfGrossWins.toFixed(1)}% of gross wins · worst loss ${fmt$(stats.maxLoss)}`,
@@ -83,7 +82,7 @@ function renderBarIntraday(stats) {
   const g2pCls   = stats.gainToPain >= 2 ? 'green' : stats.gainToPain >= 1 ? 'yellow' : 'red';
   const dayWrCls = (stats.profitableDays / stats.tradingDays) * 100 >= 60 ? 'green'
                  : (stats.profitableDays / stats.tradingDays) * 100 >= 50 ? 'yellow' : 'red';
-  const sharpeCls = stats.sharpe >= 1 ? 'green' : stats.sharpe >= 0.5 ? 'yellow' : 'red';
+  const sortinoCls = stats.sortino >= 1 ? 'green' : stats.sortino >= 0.5 ? 'yellow' : 'red';
 
   document.getElementById('bar-intraday').innerHTML = [
     card('Day Win Rate',
@@ -92,9 +91,9 @@ function renderBarIntraday(stats) {
     card('Gain-to-Pain',
       val(fmtR(stats.gainToPain), g2pCls),
       `Net P&amp;L ÷ sum of losing days · &gt;1 = edge`),
-    card('Sharpe Ratio',
-      val(isFinite(stats.sharpe) ? stats.sharpe.toFixed(2) : '∞', sharpeCls),
-      `Daily P&L series · ${stats.tradingDays}d · mean ÷ std dev`),
+    card('Sortino Ratio',
+      val(isFinite(stats.sortino) ? stats.sortino.toFixed(2) : '∞', sortinoCls),
+      `Avg daily P&L ÷ downside deviation · losing days only`),
     card('Avg Intraday DD',
       val(fmt$(-stats.avgIntradayDD), 'red', '17px'),
       `Max single session: ${fmt$(-stats.maxIntradayDD)}`),

@@ -21,7 +21,7 @@ function computeStats(trades, sizeThreshold) {
 
   const maxLoss = losses.length ? Math.min(...losses.map(t => t.netPnl)) : 0;
 
-  // Expectancy and R-multiple
+  // Avg P&L per trade (commonly called expectancy) and edge ratio (avg P&L / avg loss magnitude)
   const expectancy = totalNet / trades.length;
   const rMultiple  = avgLoss !== 0 ? expectancy / Math.abs(avgLoss) : 0;
 
@@ -116,13 +116,18 @@ function computeStats(trades, sizeThreshold) {
   const firstTradeWR   = tradingDays > 0 ? (firstTradeWins / tradingDays) * 100 : 0;
   const recoveryRate   = wentNegDays > 0 ? (recoveredDays / wentNegDays) * 100 : 100;
 
-  // Sharpe on daily P&L series (mean / std dev, not annualised — relative indicator only)
-  let sharpe = 0;
+  // Sortino ratio on daily P&L series (mean / downside deviation of losing days)
+  // Uses only negative daily P&Ls for denominator so winning days don't inflate "risk"
+  let sortino = 0;
   if (tradingDays > 1) {
-    const mean = avgDailyPnl;
-    const variance = dailyPnls.reduce((s, v) => s + (v - mean) ** 2, 0) / tradingDays;
-    const stdDev = Math.sqrt(variance);
-    sharpe = stdDev > 0 ? mean / stdDev : (mean > 0 ? Infinity : 0);
+    const losingDayPnls = dailyPnls.filter(v => v < 0);
+    if (losingDayPnls.length > 0) {
+      const downsideVariance = losingDayPnls.reduce((s, v) => s + v ** 2, 0) / tradingDays;
+      const downsideDev = Math.sqrt(downsideVariance);
+      sortino = downsideDev > 0 ? avgDailyPnl / downsideDev : (avgDailyPnl > 0 ? Infinity : 0);
+    } else {
+      sortino = avgDailyPnl > 0 ? Infinity : 0; // all days profitable
+    }
   }
 
   return {
@@ -148,7 +153,7 @@ function computeStats(trades, sizeThreshold) {
     avgIntradayDD, maxIntradayDD,
     firstTradeWR,
     recoveryRate, recoveredDays, wentNegDays,
-    sharpe,
+    sortino,
   };
 }
 
