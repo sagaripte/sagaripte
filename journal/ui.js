@@ -46,10 +46,7 @@ function val(v, cls, size) {
 // ─── ROW 1: Returns ───────────────────────────
 
 function renderBarReturns(stats) {
-  const totalPct  = settings.balance > 0 ? (stats.totalNet / settings.balance) * 100 : 0;
-  const growthSub = settings.balance > 0
-    ? `${totalPct >= 0 ? '+' : ''}${totalPct.toFixed(1)}% on $${settings.balance.toLocaleString()} · ${stats.tradingDays}d`
-    : `Gross: ${fmtPnl(stats.totalGross)}`;
+  const growthSub = `avg ${fmt$(stats.avgDailyPnl)}/day · ${stats.tradingDays} trading days`;
   const pfStr = isFinite(stats.profitFactor) ? stats.profitFactor.toFixed(2) : '∞';
   const pfCls  = stats.profitFactor >= 1.5 ? 'green' : stats.profitFactor >= 1 ? 'yellow' : 'red';
   const wrCls  = stats.winRate >= 55 ? 'green' : stats.winRate >= 45 ? 'yellow' : 'red';

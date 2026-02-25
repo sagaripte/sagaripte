@@ -161,7 +161,7 @@ function computeStats(trades, sizeThreshold) {
 
 function fmtPnl(v) {
   const sign = v >= 0 ? '+' : '';
-  return `${sign}$${Math.abs(v).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  return `${sign}$${Math.abs(v).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
 }
 
 function fmtPrice(v) {
