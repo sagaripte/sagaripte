@@ -222,11 +222,26 @@ function buildTradesFromBalanceHistory(rows) {
     const exitComm = exitCommRow ? Math.abs(parseFloat(exitCommRow['Realized P&L (value)'])) : 0;
 
     let entryComm = exitComm, entryDate = null;
-    const matchIdx = enterComms.findIndex(e => e.sym === symbol && e.qty === qty && e.time < exitDate);
+    // First try exact qty match (single-leg close)
+    let matchIdx = enterComms.findIndex(e => e.sym === symbol && e.qty === qty && e.time < exitDate);
     if (matchIdx !== -1) {
       entryComm = enterComms[matchIdx].comm;
       entryDate = enterComms[matchIdx].time;
       enterComms.splice(matchIdx, 1);
+    } else {
+      // Multi-leg: collect all enter commissions for this symbol before exitDate,
+      // use the earliest timestamp as entryDate and sum their commissions.
+      const legIndices = [];
+      enterComms.forEach((e, i) => { if (e.sym === symbol && e.time < exitDate) legIndices.push(i); });
+      if (legIndices.length) {
+        entryComm = legIndices.reduce((s, i) => s + enterComms[i].comm, 0);
+        entryDate = legIndices.reduce((earliest, i) =>
+          enterComms[i].time < earliest ? enterComms[i].time : earliest,
+          enterComms[legIndices[0]].time
+        );
+        // Remove matched legs in reverse order to preserve indices
+        for (let i = legIndices.length - 1; i >= 0; i--) enterComms.splice(legIndices[i], 1);
+      }
     }
 
     const totalComm  = exitComm + entryComm;

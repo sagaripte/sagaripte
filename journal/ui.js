@@ -143,7 +143,10 @@ function renderDailyCards(trades) {
     else               dailyMap[key].losses++;
   }
 
-  document.getElementById('daily-cards').innerHTML = Object.keys(dailyMap).sort().map(date => {
+  const allDates = Object.keys(dailyMap).sort();
+  const dates = allDates.slice(-5);
+
+  document.getElementById('daily-cards').innerHTML = dates.map(date => {
     const d   = dailyMap[date];
     const wr  = d.count ? ((d.wins / d.count) * 100).toFixed(0) : 0;
     const cls = d.pnl >= 0 ? 'positive' : 'negative';
