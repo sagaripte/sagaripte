@@ -323,6 +323,11 @@
         <input type="number" id="setting-size-threshold" class="form-input" value="500" min="0" step="50">
         <div class="form-hint">Splits trades into noise (&lt;threshold) vs. conviction (≥threshold) for edge analysis.</div>
       </div>
+      <div class="form-group">
+        <label class="form-label" for="setting-lot-threshold">Per-lot Sortino Conviction ($/lot)</label>
+        <input type="number" id="setting-lot-threshold" class="form-input" value="300" min="0" step="50">
+        <div class="form-hint">Minimum |net P&amp;L ÷ contracts| for a trade to count in the per-lot Sortino.</div>
+      </div>
     </div>
 
     <div class="settings-section">
@@ -368,6 +373,9 @@
 
   <div class="section-title">Intraday Behavior</div>
   <div class="stats-bar" id="bar-intraday"></div>
+
+  <div class="section-title">Per-Contract (1 Lot)</div>
+  <div class="stats-bar" id="bar-perlot"></div>
 
   <div class="section-title">Directional Breakdown</div>
   <div class="stats-bar" id="bar-direction"></div>

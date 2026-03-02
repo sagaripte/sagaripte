@@ -7,7 +7,7 @@ let sortCol       = 'net';
 let sortAsc       = false;
 
 const SETTINGS_KEY = 'tj_settings';
-let settings = { balance: 100000, pointValue: null, sizeThreshold: 500 };
+let settings = { balance: 100000, pointValue: null, sizeThreshold: 500, lotThreshold: 300 };
 
 function loadSettings() {
   try {
@@ -15,6 +15,7 @@ function loadSettings() {
     if (typeof s.balance       === 'number') settings.balance       = s.balance;
     if (typeof s.pointValue    === 'number') settings.pointValue    = s.pointValue;
     if (typeof s.sizeThreshold === 'number') settings.sizeThreshold = s.sizeThreshold;
+    if (typeof s.lotThreshold  === 'number') settings.lotThreshold  = s.lotThreshold;
   } catch (_) {}
   _pointValueOverride = settings.pointValue;
 }
@@ -79,7 +80,7 @@ function renderBarIntraday(stats) {
   const g2pCls   = stats.gainToPain >= 2 ? 'green' : stats.gainToPain >= 1 ? 'yellow' : 'red';
   const dayWrCls = (stats.profitableDays / stats.tradingDays) * 100 >= 60 ? 'green'
                  : (stats.profitableDays / stats.tradingDays) * 100 >= 50 ? 'yellow' : 'red';
-  const sortinoCls = stats.sortino >= 1 ? 'green' : stats.sortino >= 0.5 ? 'yellow' : 'red';
+  const holdCls  = stats.avgWinHoldMs <= stats.avgLossHoldMs ? 'green' : 'yellow';
 
   document.getElementById('bar-intraday').innerHTML = [
     card('Day Win Rate',
@@ -88,9 +89,9 @@ function renderBarIntraday(stats) {
     card('Gain-to-Pain',
       val(fmtR(stats.gainToPain), g2pCls),
       `Net P&amp;L ÷ sum of losing days · &gt;1 = edge`),
-    card('Sortino Ratio',
-      val(isFinite(stats.sortino) ? stats.sortino.toFixed(2) : '∞', sortinoCls),
-      `Conviction trades only (≥$${settings.sizeThreshold})`),
+    card('Avg Hold Time',
+      val(fmtDuration(stats.avgHoldMs), holdCls, '17px'),
+      `Win ${fmtDuration(stats.avgWinHoldMs)} · Loss ${fmtDuration(stats.avgLossHoldMs)} · Max ${fmtDuration(stats.maxHoldMs)}`),
     card('Avg Intraday DD',
       val(fmt$(-stats.avgIntradayDD), 'red', '17px'),
       `Max single session: ${fmt$(-stats.maxIntradayDD)}`),
@@ -100,7 +101,30 @@ function renderBarIntraday(stats) {
   ].join('');
 }
 
-// ─── ROW 3: Capital Management — removed, merged into Intraday Behavior ──────
+// ─── ROW 3: Per-Contract (1 Lot) ─────────────
+
+function renderBarPerLot(stats) {
+  const expCls     = stats.lotExpectancy >= 0 ? 'green' : 'red';
+  const sortinoCls = stats.lotSortino >= 1 ? 'green' : stats.lotSortino >= 0.5 ? 'yellow' : 'red';
+
+  document.getElementById('bar-perlot').innerHTML = [
+    card('Expectancy / Lot',
+      val(fmtPnl(stats.lotExpectancy), expCls),
+      `Avg net P&L per trade if sized at 1 contract`),
+    card('Avg Win / Lot',
+      val(fmtPnl(stats.lotAvgWin), 'green'),
+      `Avg loss ${fmt$(stats.lotAvgLoss)} · skew ${isFinite(stats.lotSkew) ? stats.lotSkew.toFixed(2) : '∞'}×`),
+    card('Max Win / Lot',
+      val(fmtPnl(stats.lotMaxWin), 'green', '17px'),
+      `Best single trade normalized to 1 contract`),
+    card('Max Loss / Lot',
+      val(fmtPnl(stats.lotMaxLoss), 'red', '17px'),
+      `Worst single trade normalized to 1 contract`),
+    card('Sortino / Lot',
+      val(isFinite(stats.lotSortino) ? stats.lotSortino.toFixed(2) : '∞', sortinoCls),
+      `Conviction ≥$${settings.lotThreshold}/lot · 1-lot normalized`),
+  ].join('');
+}
 
 // ─── ROW 4: Directional ──────────────────────
 
@@ -251,11 +275,12 @@ function renderTable() {
 // ─── Orchestration ────────────────────────────
 
 function renderAll(trades) {
-  const stats = computeStats(trades, settings.sizeThreshold);
+  const stats = computeStats(trades, settings.sizeThreshold, settings.lotThreshold);
   if (!stats) return;
 
   renderBarReturns(stats);
   renderBarIntraday(stats);
+  renderBarPerLot(stats);
   renderBarDirection(stats);
   renderCharts(trades, stats);
   renderDailyCards(trades);
@@ -362,6 +387,7 @@ function openSettings() {
   document.getElementById('setting-balance').value        = settings.balance || '';
   document.getElementById('setting-point-value').value    = settings.pointValue !== null ? settings.pointValue : '';
   document.getElementById('setting-size-threshold').value = settings.sizeThreshold ?? 500;
+  document.getElementById('setting-lot-threshold').value  = settings.lotThreshold ?? 300;
 }
 function closeSettings() {
   document.getElementById('settings-panel').classList.remove('open');
@@ -376,9 +402,11 @@ document.getElementById('settings-apply').addEventListener('click', () => {
   const bal = parseFloat(document.getElementById('setting-balance').value);
   const pv  = parseFloat(document.getElementById('setting-point-value').value);
   const thr = parseFloat(document.getElementById('setting-size-threshold').value);
+  const lot = parseFloat(document.getElementById('setting-lot-threshold').value);
   settings.balance       = isFinite(bal) && bal >= 0 ? bal : 0;
   settings.pointValue    = isFinite(pv)  && pv  > 0  ? pv  : null;
   settings.sizeThreshold = isFinite(thr) && thr >= 0 ? thr : 500;
+  settings.lotThreshold  = isFinite(lot) && lot >= 0 ? lot : 300;
   saveSettings();
   closeSettings();
   if (allTrades.length) renderAll(allTrades);
@@ -409,3 +437,4 @@ loadSettings();
 document.getElementById('setting-balance').value        = settings.balance || '';
 document.getElementById('setting-point-value').value    = settings.pointValue !== null ? settings.pointValue : '';
 document.getElementById('setting-size-threshold').value = settings.sizeThreshold ?? 500;
+document.getElementById('setting-lot-threshold').value  = settings.lotThreshold ?? 300;

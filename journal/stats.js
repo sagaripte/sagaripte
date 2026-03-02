@@ -1,8 +1,9 @@
 // stats.js — P&L statistics and formatting helpers
 
-function computeStats(trades, sizeThreshold) {
+function computeStats(trades, sizeThreshold, lotThreshold) {
   if (!trades.length) return null;
   if (sizeThreshold === undefined) sizeThreshold = 500;
+  if (lotThreshold  === undefined) lotThreshold  = 250;
 
   const wins   = trades.filter(t => t.netPnl >= 0);
   const losses = trades.filter(t => t.netPnl < 0);
@@ -143,6 +144,55 @@ function computeStats(trades, sizeThreshold) {
     }
   }
 
+  // ── Hold time ────────────────────────────────────────────────────────────
+  const timed = trades.filter(t => t.durationMs > 0);
+  const timedWins   = timed.filter(t => t.netPnl >= 0);
+  const timedLosses = timed.filter(t => t.netPnl < 0);
+  const avgHoldMs     = timed.length ? timed.reduce((s, t) => s + t.durationMs, 0) / timed.length : 0;
+  const maxHoldMs     = timed.length ? Math.max(...timed.map(t => t.durationMs)) : 0;
+  const avgWinHoldMs  = timedWins.length   ? timedWins.reduce((s, t)   => s + t.durationMs, 0) / timedWins.length   : 0;
+  const avgLossHoldMs = timedLosses.length ? timedLosses.reduce((s, t) => s + t.durationMs, 0) / timedLosses.length : 0;
+
+  // ── Per-1-lot normalized metrics ─────────────────────────────────────────
+  // Normalize each trade's net P&L by its contract qty, then re-derive stats.
+  // Gives a size-adjusted view: "if I traded 1 lot each time, how did I do?"
+  const norm = trades.map(t => t.qty > 0 ? t.netPnl / t.qty : t.netPnl);
+  const normWins   = norm.filter(v => v >= 0);
+  const normLosses = norm.filter(v => v < 0);
+  const lotAvgWin   = normWins.length   ? normWins.reduce((s, v)   => s + v, 0) / normWins.length   : 0;
+  const lotAvgLoss  = normLosses.length ? normLosses.reduce((s, v) => s + v, 0) / normLosses.length : 0;
+  const lotMaxLoss  = normLosses.length ? Math.min(...normLosses) : 0;
+  const lotMaxWin   = normWins.length   ? Math.max(...normWins)   : 0;
+  const lotExpectancy = norm.reduce((s, v) => s + v, 0) / norm.length;
+  const lotSkew     = lotAvgLoss !== 0 ? Math.abs(lotAvgWin / lotAvgLoss) : Infinity;
+
+  // Sortino on per-lot normalized series — conviction threshold configurable via settings
+  const LOT_CONV_THR = lotThreshold;
+  const lotConvTradeMap = {};
+  for (const t of trades) {
+    if ((t.qty > 0 ? Math.abs(t.netPnl / t.qty) : Math.abs(t.netPnl)) < LOT_CONV_THR) continue;
+    const k = dateKey(t.date);
+    if (!lotConvTradeMap[k]) lotConvTradeMap[k] = [];
+    lotConvTradeMap[k].push(t);
+  }
+  const lotConvKeys = Object.keys(lotConvTradeMap).sort();
+  const lotConvDays = lotConvKeys.length || 1;
+  const convNormDailyPnls = lotConvKeys.map(k =>
+    lotConvTradeMap[k].reduce((s, t) => s + (t.qty > 0 ? t.netPnl / t.qty : t.netPnl), 0)
+  );
+  const convNormAvgDaily = convNormDailyPnls.reduce((s, v) => s + v, 0) / lotConvDays;
+  let lotSortino = 0;
+  if (lotConvDays > 1) {
+    const losingNorm = convNormDailyPnls.filter(v => v < 0);
+    if (losingNorm.length > 0) {
+      const dsVar = losingNorm.reduce((s, v) => s + v ** 2, 0) / lotConvDays;
+      const dsDev = Math.sqrt(dsVar);
+      lotSortino = dsDev > 0 ? convNormAvgDaily / dsDev : (convNormAvgDaily > 0 ? Infinity : 0);
+    } else {
+      lotSortino = convNormAvgDaily > 0 ? Infinity : 0;
+    }
+  }
+
   return {
     // Core
     totalNet, totalGross, totalComm,
@@ -167,6 +217,10 @@ function computeStats(trades, sizeThreshold) {
     firstTradeWR,
     recoveryRate, recoveredDays, wentNegDays,
     sortino,
+    // Hold time
+    avgHoldMs, maxHoldMs, avgWinHoldMs, avgLossHoldMs,
+    // Per-1-lot
+    lotAvgWin, lotAvgLoss, lotMaxLoss, lotMaxWin, lotExpectancy, lotSkew, lotSortino,
   };
 }
 
