@@ -90,7 +90,7 @@ function renderBarIntraday(stats) {
       `Net P&amp;L ÷ sum of losing days · &gt;1 = edge`),
     card('Sortino Ratio',
       val(isFinite(stats.sortino) ? stats.sortino.toFixed(2) : '∞', sortinoCls),
-      `Avg daily P&L ÷ downside deviation · losing days only`),
+      `Conviction trades only (≥$${settings.sizeThreshold})`),
     card('Avg Intraday DD',
       val(fmt$(-stats.avgIntradayDD), 'red', '17px'),
       `Max single session: ${fmt$(-stats.maxIntradayDD)}`),

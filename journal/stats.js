@@ -84,13 +84,24 @@ function computeStats(trades, sizeThreshold) {
   // ── Intraday behavior metrics ─────────────────────────────────────────────
   // For each session: compute running P&L, find intraday max drawdown,
   // first trade result, and whether the day recovered from a drawdown.
+  // Uses only conviction trades (≥ sizeThreshold) so noise trades don't
+  // inflate drawdown / distort Sortino.
+  const convictionTrades = trades.filter(t => Math.abs(t.netPnl) >= sizeThreshold);
+  const convTradeMap = {};
+  for (const t of convictionTrades) {
+    const k = dateKey(t.date);
+    if (!convTradeMap[k]) convTradeMap[k] = [];
+    convTradeMap[k].push(t);
+  }
+  const convKeys = Object.keys(convTradeMap).sort();
+
   const sessionDDs = [];       // per-day intraday max drawdown
   let firstTradeWins = 0;      // sessions where first trade was a win
   let recoveredDays  = 0;      // days that went negative then ended green
   let wentNegDays    = 0;      // days that hit negative at some point
 
-  for (const dk of dailyKeys) {
-    const dayTrades = dailyTradeMap[dk]; // already in date order (trades sorted globally)
+  for (const dk of convKeys) {
+    const dayTrades = convTradeMap[dk];
 
     // First trade win rate
     if (dayTrades[0] && dayTrades[0].netPnl >= 0) firstTradeWins++;
@@ -111,22 +122,24 @@ function computeStats(trades, sizeThreshold) {
     }
   }
 
+  const convDays       = convKeys.length || tradingDays;
   const avgIntradayDD  = sessionDDs.length ? sessionDDs.reduce((s, v) => s + v, 0) / sessionDDs.length : 0;
   const maxIntradayDD  = sessionDDs.length ? Math.max(...sessionDDs) : 0;
-  const firstTradeWR   = tradingDays > 0 ? (firstTradeWins / tradingDays) * 100 : 0;
+  const firstTradeWR   = convKeys.length > 0 ? (firstTradeWins / convKeys.length) * 100 : 0;
   const recoveryRate   = wentNegDays > 0 ? (recoveredDays / wentNegDays) * 100 : 100;
 
-  // Sortino ratio on daily P&L series (mean / downside deviation of losing days)
-  // Uses only negative daily P&Ls for denominator so winning days don't inflate "risk"
+  // Sortino: computed on conviction-only daily P&L series
+  const convDailyPnls  = convKeys.map(k => convTradeMap[k].reduce((s, t) => s + t.netPnl, 0));
+  const convAvgDaily   = convDays > 0 ? convDailyPnls.reduce((s, v) => s + v, 0) / convDays : 0;
   let sortino = 0;
-  if (tradingDays > 1) {
-    const losingDayPnls = dailyPnls.filter(v => v < 0);
+  if (convDays > 1) {
+    const losingDayPnls = convDailyPnls.filter(v => v < 0);
     if (losingDayPnls.length > 0) {
-      const downsideVariance = losingDayPnls.reduce((s, v) => s + v ** 2, 0) / tradingDays;
+      const downsideVariance = losingDayPnls.reduce((s, v) => s + v ** 2, 0) / convDays;
       const downsideDev = Math.sqrt(downsideVariance);
-      sortino = downsideDev > 0 ? avgDailyPnl / downsideDev : (avgDailyPnl > 0 ? Infinity : 0);
+      sortino = downsideDev > 0 ? convAvgDaily / downsideDev : (convAvgDaily > 0 ? Infinity : 0);
     } else {
-      sortino = avgDailyPnl > 0 ? Infinity : 0; // all days profitable
+      sortino = convAvgDaily > 0 ? Infinity : 0;
     }
   }
 
