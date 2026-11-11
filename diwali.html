@@ -83,7 +83,7 @@ section > .wrap > h2{font-family:var(--display);font-weight:500;font-size:clamp(
 .tide.b{animation-direction:alternate-reverse}
 @keyframes tide{from{transform:translateX(-11px)}to{transform:translateX(11px)}}
 .shot{animation:shot 2.6s linear infinite}
-@keyframes shot{0%{transform:translateX(0);opacity:0}8%{opacity:1}50%{transform:translateX(190px);opacity:1}56%,100%{transform:translateX(200px);opacity:0}}
+@keyframes shot{0%{transform:translateX(0);opacity:0}8%{opacity:1}42%,66%{transform:translateX(155px);opacity:1}74%,100%{transform:translateX(155px);opacity:0}}
 .flicker{animation:flicker 4.6s ease-in-out infinite}
 @keyframes flicker{0%,100%{opacity:.9}22%{opacity:.62}40%{opacity:1}63%{opacity:.74}80%{opacity:.95}}
 .flame{transform-box:fill-box;transform-origin:50% 100%;animation:flame 1.9s ease-in-out infinite}
@@ -270,7 +270,7 @@ body.solo .story{padding:0}
       <article class="step" data-stop>
         <p class="kick">Chapter 6 · Lanka</p>
         <h3>The last arrow</h3>
-        <p>The war is long and costly. Ravana’s own brother had begged him to return Sita and was banished for saying so; he now stands with Rama. In the final duel, every head Rama strikes from Ravana grows back. At last Rama looses a single divine arrow at Ravana’s heart, and the king falls. Sita is free.</p>
+        <p>The war is long and costly. Ravana’s own brother, Vibhishana, had begged him to return Sita and was banished for saying so; he now stands with Rama. In the final duel, every head Rama strikes from Ravana grows back, because a store of <b>amrita</b> <span class="pron">(uhm-REE-tah)</span>, the nectar of immortality, lies in his navel and keeps him alive. Vibhishana tells Rama the secret. Rama aims a single arrow at the navel, the nectar dries up, and the king falls. Sita is free.</p>
         <p class="note"><b>Worth knowing</b>This victory has its own festival, Dussehra, about twenty days before Diwali. Towering effigies of Ravana are set alight in parks and fairgrounds.</p>
       </article>
       <article class="step" data-stop>
@@ -317,7 +317,7 @@ body.solo .story{padding:0}
     <h2>Five days, each with its own job</h2>
     <p class="lede">Names and customs vary by region, but most families follow a rhythm like this.</p>
     <ol class="days">
-      <li><div><b>Dhanteras</b><span>Homes are cleaned from top to bottom and decorated. Buying something new, often gold, silver or a kitchen pot, is thought to bring luck.</span></div></li>
+      <li><div><b>Dhanteras</b><span>Honours Dhanvantari, physician of the gods and patron of Ayurveda, who rose from the churning ocean carrying the nectar of immortality, so families pray for good health.</span></div></li>
       <li><div><b>Choti Diwali</b><em>Little Diwali</em><span>Rangoli, patterns made from coloured powder or flowers, are laid at the doorstep. Sweets are made and the first lamps are lit.</span></div></li>
       <li class="main"><div><b>Diwali</b><em>The main night</em><span>Families dress up, pray to Lakshmi, the goddess of prosperity, and light every lamp in the house. Then comes the feast, the sweets and the fireworks.</span></div></li>
       <li><div><b>Padwa</b><span>For many communities this is new year’s day. Businesses open fresh account books, and gifts pass between husbands and wives.</span></div></li>
@@ -354,7 +354,7 @@ body.solo .story{padding:0}
   </div>
 </section>
 
-<footer>Retold from Valmiki’s Ramayana. Details differ across the many versions told throughout Asia.</footer>
+<footer>Retold mainly from Valmiki’s Ramayana; the nectar in Ravana’s navel comes from Tulsidas’s Ramcharitmanas. Details differ across the many versions told throughout Asia.</footer>
 <button class="auto" id="auto" type="button" aria-pressed="false">▶ Auto-play</button>
 
 <script>
@@ -439,7 +439,7 @@ function vanara(o = {}){
     ${rods ? `<line x1="0" y1="-150" x2="0" y2="170" stroke="${K}" stroke-width="2" opacity=".4"/>` : ''}
     ${limb([[8, -145], ...front], skin, 9)}${extra}`;
 }
-function ravana(rods = true){
+function ravana(rods = true, nectar = false){
   const skin = '#2e5d33';
   const mini = (x, y, f) => `<g transform="translate(${x} ${y}) scale(${f * .58} .58) translate(0 176)">${head(skin, { demon: true })}${crown('short')}</g>`;
   let heads = '';
@@ -453,6 +453,7 @@ function ravana(rods = true){
     ${holes([[-28, -18], [-16, -18], [-4, -18], [8, -18], [20, -18], [32, -18], [-6, -60], [10, -46], [-16, -42], [20, -68], [0, -80]], 2)}
     <path d="M-27 -98 C-38 -126 -34 -148 -21 -157 L21 -157 C35 -147 38 -124 28 -98Z" fill="${skin}" ${st}/>
     <path d="M-17 -154 Q2 -116 21 -154" fill="none" stroke="${L}" stroke-width="2.6"/>${holes([[2, -130]], 3.4)}${holes([[-9, -138], [13, -138]], 1.8)}
+    ${nectar ? `<circle class="flicker" cx="2" cy="-116" r="24" fill="url(#lampglow)"/><circle cx="2" cy="-116" r="5.5" fill="${L}" stroke="${K}" stroke-width="2"/>` : ''}
     <path d="M-31 -108 H31 V-96 H-31Z" fill="${OCH}" ${st}/>${holes([[-18, -102], [-6, -102], [6, -102], [18, -102]], 1.6)}
     ${heads}<g transform="translate(0 -176) scale(1.22) translate(0 176)">${head(skin, { demon: true })}${crown('tall')}</g>
     ${rods ? `<line x1="0" y1="-146" x2="0" y2="170" stroke="${K}" stroke-width="2" opacity=".4"/>` : ''}`;
@@ -593,9 +594,8 @@ const SCENES = [
   () => `<rect class="full" y="-100" width="800" height="600" fill="${RED}" opacity=".2"/>
     ${put(112, 442, .98, vanara({ front: [[30, -150], [36, -182]], extra: mace(36, -182) }), { d: .4 })}
     ${put(226, 442, 1.26, rama({ front: [[32, -147], [56, -147]], back: [[-30, -138], [2, -147]], extra: bow(56, -147, [2, -147]) }), { d: .15 })}
-    <g transform="translate(330 257)"><g class="shot">${arrow(0, 0, 44)}</g></g>
     ${[[400, 12], [450, -9], [500, 16]].map(([x, r]) => `<g transform="translate(${x} 444) rotate(${-70 + r})">${arrow(-40, 0, 30)}</g>`).join('')}
-    ${put(582, 442, 1.4, ravana(), { flip: true, d: .3, cls: 'reel' })}${ground()}`,
+    ${put(582, 442, 1.4, ravana(true, true), { flip: true, d: .3, cls: 'reel' })}<g transform="translate(330 257) rotate(5.8)"><g class="shot"><path d="M0 0 h80" stroke="${K}" stroke-width="7" stroke-linecap="round"/><path d="M0 0 h80" stroke="${L}" stroke-width="3" stroke-linecap="round"/><path d="M94 0 l-20 -9 v18z" fill="${L}" stroke="${K}" stroke-width="2.4" stroke-linejoin="round"/><path d="M0 0 l-11 -7 M0 0 l-11 7 M8 0 l-11 -7 M8 0 l-11 7" stroke="${K}" stroke-width="2.4" stroke-linecap="round"/></g></g>${ground()}`,
   /* 7: the homecoming. The screen goes dark and the lamps take over. */
   () => { let a = 11; const rnd = () => (a = (a * 9301 + 49297) % 233280) / 233280, N = '#1c1233';
     let stars = '', lamps = '', n = 0;
