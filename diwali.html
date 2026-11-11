@@ -149,6 +149,17 @@ body.solo .frame{height:auto;max-height:none;aspect-ratio:4/3}
 body.solo .story-grid{display:block;padding:0;max-width:none}
 body.solo .story{padding:0}
 
+/* Phones and small tablets: the stage crops to the puppets with no spare sky, and chapters sit close together. */
+@media (max-width:899px){
+  section{padding-block:44px}
+  .story{padding-block:8px 0}
+  .theatre{padding:6px 8px 4px}
+  .frame{height:auto;min-height:0;aspect-ratio:8/5;max-height:52vh;max-height:52svh;border-width:5px}
+  .dots{padding-top:5px}
+  .step{min-height:0;padding-block:20px;opacity:.42}
+  .step .note{margin-top:12px}
+  .join{padding-bottom:84px}
+}
 @media (min-width:640px){
   .tiles{grid-template-columns:repeat(3,minmax(0,1fr))}
   .cast{grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -621,12 +632,13 @@ function topArt(extra){
     <path class="flame" d="M0 3 C8 14 6 22 0 27 C-6 22 -8 14 0 3Z" fill="#fff6d0" stroke="${K}" stroke-width="1.4"/>
     <path d="M-20 27 C-20 46 20 46 20 27Z" fill="${OCH}" ${st}/>${holes([[-9, 34], [0, 37], [9, 34]], 1.7)}<path d="M0 42 v10" stroke="${K}" stroke-width="3"/><circle cy="54" r="3.4" fill="${K}"/></g>`;
   const lamps = extra >= 120 ? hang(150, 40 + extra * .42) + hang(650, 40 + extra * .42) + hang(400, 30 + extra * .25) : '';
-  return `${corner}<g transform="translate(800 0) scale(-1 1)">${corner}</g>${lamps}${toran()}`;
+  const arch = extra >= 60 ? `${corner}<g transform="translate(800 0) scale(-1 1)">${corner}</g>` : '';
+  return `${arch}${lamps}${toran()}`;
 }
 const frameEl = screen.parentElement, topG = screen.querySelector('#top'), zoomG = screen.querySelector('#zoom');
 function fit(){
-  const r = frameEl.getBoundingClientRect(); if (!r.width || !r.height) return;
-  const want = 800 * r.height / r.width, h = Math.round(Math.max(500, Math.min(1000, want))), top = 500 - h;
+  const fw = frameEl.clientWidth, fh = frameEl.clientHeight; if (!fw || !fh) return;
+  const want = 800 * fh / fw, h = Math.round(Math.max(500, Math.min(1000, want))), top = 500 - h;
   screen.setAttribute('viewBox', `0 ${top} 800 ${h}`);
   screen.setAttribute('preserveAspectRatio', want < 500 ? 'xMidYMax meet' : 'xMidYMax slice');
   screen.querySelectorAll('.full').forEach(e => { e.setAttribute('y', top); e.setAttribute('height', h); });
@@ -735,7 +747,8 @@ function go(i){
   at = i % stops.length;
   const el = stops[at], r = el.getBoundingClientRect();
   if (at === 0) lampBtns.forEach(b => setLamp(b, false));
-  scrollTo({ top: el.classList.contains('step') ? scrollY + r.top + r.height / 2 - readingLine() : scrollY + r.top, behavior: 'smooth' });
+  const pinned = wide.matches ? innerHeight * .5 : theatre.offsetHeight + (innerHeight - theatre.offsetHeight) * .45;
+  scrollTo({ top: el.classList.contains('step') ? scrollY + r.top + r.height / 2 - pinned : scrollY + r.top, behavior: 'smooth' });
   if (el === join) setTimeout(lightAll, 2500);
 }
 function autoplay(on){
