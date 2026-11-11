@@ -1,0 +1,749 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>The Night of Lamps</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Hind:wght@400;500;600&family=Tiro+Devanagari+Hindi&display=swap">
+<style>
+/* A Diwali explainer told as a shadow-puppet play.
+   Layout: hero → Diwali in a minute → sticky puppet theatre with scrolling chapters → cast → map → five days → other traditions → light the lamps.
+   URL options: ?tv starts auto-play (for an unattended screen), ?scene=N shows one puppet scene on its own. */
+:root{
+  --bg:#130904; --bg2:#1d0f07; --panel:#241209; --line:rgba(248,231,196,.14);
+  --cream:#f8e7c4; --muted:#cdb088; --saffron:#ffb340; --ember:#e7622a;
+  --display:"Fraunces", Georgia, "Times New Roman", serif;
+  --body:"Hind", "Segoe UI", system-ui, sans-serif;
+  --deva:"Tiro Devanagari Hindi", "Hind", serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--cream);font-family:var(--body);font-size:1.125rem;line-height:1.6}
+h1,h2,h3,p{margin:0}
+.wrap{max-width:1120px;margin-inline:auto;padding-inline:max(20px, env(safe-area-inset-left,0px))}
+.kick{font-size:.8125rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--saffron)}
+.pron{font-size:.82em;font-style:italic;color:var(--muted);white-space:nowrap}
+section{padding-block:72px}
+section > .wrap > h2{font-family:var(--display);font-weight:500;font-size:clamp(1.9rem,4.6vw,3rem);line-height:1.12;margin:8px 0 14px;text-wrap:balance}
+.lede{max-width:40em;color:var(--muted);text-wrap:pretty}
+
+/* ---------- hero ---------- */
+.hero{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:48px 20px;
+  background:radial-gradient(60% 46% at 50% 74%, rgba(255,160,40,.34), rgba(255,120,20,.08) 60%, transparent 100%)}
+.hero h1{font-family:var(--display);font-weight:600;font-size:clamp(4.2rem,17vw,9rem);line-height:.95;letter-spacing:-.02em;color:var(--saffron)}
+.hero .deva{font-family:var(--deva);font-size:clamp(1.7rem,6vw,2.75rem);margin-top:6px}
+.hero .lede{margin:20px auto 0;color:var(--cream);font-size:clamp(1.125rem,2.4vw,1.375rem);max-width:30em}
+.hero svg{width:min(52vw,230px);height:auto;margin-top:26px;overflow:visible}
+.cue{margin-top:18px;font-size:.9375rem;font-weight:600;color:var(--saffron)}
+.cue span{display:inline-block;animation:nudge 1.8s ease-in-out infinite}
+@keyframes nudge{50%{transform:translateY(5px)}}
+
+/* ---------- Diwali in a minute ---------- */
+.tiles{display:grid;gap:14px;margin-top:28px}
+.tile{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px 22px 24px}
+.tile h3{font-family:var(--display);font-style:italic;font-weight:500;font-size:1.75rem;color:var(--saffron);margin-bottom:6px}
+
+/* ---------- theatre ---------- */
+.story{padding-block:24px 0}
+.story-head{padding-bottom:20px}
+.theatre{position:sticky;top:0;z-index:3;background:var(--bg);padding:10px 10px 8px}
+.frame{border:7px solid #2c160a;border-radius:10px;overflow:hidden;background:#2c160a;
+  box-shadow:0 0 0 1px #4a2713, 0 0 70px rgba(255,150,40,.22)}
+.frame{height:50vh;height:50svh;min-height:250px}
+.frame svg{display:block;width:100%;height:100%}
+.dots{display:flex;justify-content:center;gap:7px;padding-top:8px}
+.dots i{width:7px;height:7px;border-radius:50%;background:var(--line);transition:background .3s, transform .3s}
+.dots i.on{background:var(--saffron);transform:scale(1.35)}
+.steps{padding-inline:max(22px, env(safe-area-inset-left,0px))}
+.step{min-height:66vh;min-height:66svh;padding-block:30px;display:flex;flex-direction:column;justify-content:center;opacity:.28;transition:opacity .4s}
+.step.on{opacity:1}
+.step h3{font-family:var(--display);font-weight:500;font-size:clamp(1.75rem,3.4vw,2.5rem);line-height:1.12;margin:6px 0 12px;text-wrap:balance}
+.step p{max-width:34em;text-wrap:pretty}
+.step .note{margin-top:16px;padding:12px 16px;border-left:3px solid var(--saffron);background:rgba(255,179,64,.07);border-radius:0 10px 10px 0;font-size:1rem;color:var(--muted)}
+.step .note b{display:block;font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--saffron);font-weight:600}
+
+.scene{opacity:0;transition:opacity .7s}
+.scene.on{opacity:1}
+.scene .pup{opacity:0;transform:translateY(46px)}
+.scene.on .pup{opacity:1;transform:none;transition:transform .95s cubic-bezier(.2,.8,.2,1) var(--d,0s), opacity .5s var(--d,0s)}
+.sway,.walk,.fly,.hop,.reel{transform-box:fill-box;transform-origin:50% 100%}
+.sway{animation:sway 4.2s ease-in-out infinite alternate}
+@keyframes sway{from{transform:rotate(-1.1deg)}to{transform:rotate(1.1deg)}}
+.walk{animation:walk 1.3s ease-in-out infinite}
+@keyframes walk{0%,100%{transform:rotate(-1deg)}50%{transform:translateY(-4px) rotate(1deg)}}
+.fly{transform-origin:50% 50%;animation:fly 3.4s ease-in-out infinite alternate}
+@keyframes fly{from{transform:translate(-6px,6px)}to{transform:translate(6px,-6px)}}
+.hop{animation:hop 1.5s ease-in-out infinite}
+@keyframes hop{0%,60%,100%{transform:none}30%{transform:translateY(-16px) rotate(-5deg)}}
+.reel{animation:reel 2.6s ease-in-out infinite}
+@keyframes reel{0%,100%{transform:rotate(-1deg)}48%{transform:rotate(-1deg)}56%{transform:rotate(-5deg)}70%{transform:rotate(1deg)}}
+.tide{animation:tide 5s ease-in-out infinite alternate}
+.tide.b{animation-direction:alternate-reverse}
+@keyframes tide{from{transform:translateX(-11px)}to{transform:translateX(11px)}}
+.shot{animation:shot 2.6s linear infinite}
+@keyframes shot{0%{transform:translateX(0);opacity:0}8%{opacity:1}50%{transform:translateX(190px);opacity:1}56%,100%{transform:translateX(200px);opacity:0}}
+.flicker{animation:flicker 4.6s ease-in-out infinite}
+@keyframes flicker{0%,100%{opacity:.9}22%{opacity:.62}40%{opacity:1}63%{opacity:.74}80%{opacity:.95}}
+.flame{transform-box:fill-box;transform-origin:50% 100%;animation:flame 1.9s ease-in-out infinite}
+@keyframes flame{0%,100%{transform:scaleY(1) skewX(0)}50%{transform:scaleY(1.12) skewX(-4deg)}}
+.dash{animation:dash 1.6s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-28}}
+.scene .lamp{opacity:0}
+.scene.on .lamp{opacity:1;transition:opacity .5s calc(.5s + var(--d))}
+.scene:not(.on) :is(.sway,.walk,.fly,.hop,.reel,.tide,.shot,.flame){animation-play-state:paused}
+
+/* ---------- cast ---------- */
+.cast{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:28px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px}
+.card svg{width:92px;height:92px;display:block;border-radius:50%;box-shadow:0 0 0 3px #3a1d0d, 0 0 26px rgba(255,150,40,.25)}
+.card h3{font-family:var(--display);font-weight:500;font-size:1.5rem;margin-top:12px;line-height:1.2}
+.card .role{font-size:.8125rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--saffron);margin:2px 0 6px}
+.card p{font-size:1rem;line-height:1.5;color:var(--muted)}
+
+/* ---------- map ---------- */
+.route{display:grid;gap:26px;margin-top:28px;align-items:center}
+.route svg{width:100%;max-width:520px;height:auto;margin-inline:auto;display:block;border-radius:12px;border:7px solid #2c160a;box-shadow:0 0 60px rgba(255,150,40,.18)}
+.route ol{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+.route li{display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:start}
+.route li i{width:34px;height:34px;border-radius:50%;background:var(--saffron);color:#1b0d06;font-style:normal;font-weight:600;display:grid;place-items:center}
+.route li b{font-family:var(--display);font-weight:500;font-size:1.25rem}
+.route li span{display:block;color:var(--muted);font-size:1rem;line-height:1.45}
+
+/* ---------- five days ---------- */
+.days{list-style:none;margin:28px 0 0;padding:0;display:grid;gap:12px;counter-reset:d}
+.days li{counter-increment:d;display:grid;grid-template-columns:auto 1fr;gap:16px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+.days li::before{content:counter(d);font-family:var(--display);font-size:2.4rem;line-height:1;color:var(--saffron);opacity:.75;min-width:1.1em}
+.days li.main{border-color:var(--saffron);background:linear-gradient(180deg, rgba(255,179,64,.14), rgba(255,179,64,.04))}
+.days b{font-family:var(--display);font-weight:500;font-size:1.3rem}
+.days em{font-style:normal;font-size:.8125rem;letter-spacing:.1em;text-transform:uppercase;color:var(--saffron);font-weight:600;margin-left:8px}
+.days span{display:block;color:var(--muted);font-size:1rem;line-height:1.5}
+
+/* ---------- join in ---------- */
+.join{text-align:center;padding-bottom:110px;background:radial-gradient(70% 50% at 50% 100%, rgba(255,150,40,calc(.05 + var(--lit,0) * .32)), transparent 100%);transition:background .6s}
+.join .lede{margin-inline:auto}
+.lamps{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 10px;margin:34px auto 0;max-width:760px}
+.lamps button{all:unset;cursor:pointer;width:84px;border-radius:14px;-webkit-tap-highlight-color:transparent}
+.lamps button:focus-visible{outline:2px solid var(--saffron);outline-offset:2px}
+.lamps svg{display:block;width:100%;height:auto;overflow:visible}
+.lamps .fl,.lamps .gl{opacity:0;transition:opacity .45s}
+.lamps .bowl{opacity:.55;transition:opacity .45s}
+.lamps button[aria-pressed="true"] :is(.fl,.gl,.bowl){opacity:1}
+.join .all{all:unset;cursor:pointer;margin-top:18px;font-size:.9375rem;font-weight:600;color:var(--saffron);border-bottom:1px solid currentColor}
+.wish{margin-top:30px;opacity:0;transform:translateY(14px);transition:opacity .9s, transform .9s}
+.join.done .wish{opacity:1;transform:none}
+.wish .deva{font-family:var(--deva);font-size:clamp(2.2rem,8vw,4rem);color:var(--saffron);line-height:1.2}
+.wish p + p{font-family:var(--display);font-style:italic;font-size:1.375rem;margin-top:4px}
+.sparks{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:6}
+.sparks i{position:absolute;bottom:-10px;width:6px;height:6px;border-radius:50%;background:var(--saffron);box-shadow:0 0 10px 3px rgba(255,170,50,.7);animation:rise var(--t) ease-out var(--d) both}
+@keyframes rise{from{opacity:1;transform:none}to{opacity:0;transform:translate(var(--dx),-92vh) scale(.3)}}
+footer{padding:26px 20px 90px;text-align:center;color:var(--muted);font-size:.875rem;border-top:1px solid var(--line)}
+
+.auto{position:fixed;right:14px;bottom:14px;z-index:7;all:unset;position:fixed;cursor:pointer;background:rgba(36,18,9,.9);border:1px solid var(--line);color:var(--cream);font:600 .8125rem var(--body);padding:9px 14px;border-radius:999px;backdrop-filter:blur(6px)}
+.auto[aria-pressed="true"]{background:var(--saffron);color:#1b0d06;border-color:var(--saffron)}
+
+body.solo :is(.hero,section:not(.story),.story-head,.steps,footer,.auto,.dots){display:none}
+body.solo .theatre{position:static;padding:0;height:auto}
+body.solo .frame{height:auto;max-height:none;aspect-ratio:4/3}
+body.solo .story-grid{display:block;padding:0;max-width:none}
+body.solo .story{padding:0}
+
+@media (min-width:640px){
+  .tiles{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .cast{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .days li{padding:20px 26px}
+  .lamps button{width:96px}
+}
+@media (min-width:900px){
+  body{font-size:1.1875rem}
+  section{padding-block:104px}
+  .story{padding-block:60px 0}
+  .story-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,4.5vw,72px);max-width:1500px;margin-inline:auto;padding-inline:clamp(24px,4vw,64px)}
+  .theatre{height:100vh;display:flex;flex-direction:column;justify-content:center;padding:0;background:none}
+  .frame{height:auto;aspect-ratio:1/1;max-height:84vh}
+  .steps{padding-inline:0}
+  .step{min-height:92vh}
+  .route{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px}
+  .many{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none !important;transition:none !important}
+}
+</style>
+
+<!-- Shared paint: the lamplit cloth, lamp glow, soft "far from the screen" blur. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <radialGradient id="cloth" cx="50%" cy="64%" r="78%">
+    <stop offset="0" stop-color="#fff4c8"/><stop offset=".32" stop-color="#ffd272"/><stop offset=".68" stop-color="#ee8f24"/><stop offset="1" stop-color="#8a3a0a"/>
+  </radialGradient>
+  <radialGradient id="lampglow">
+    <stop offset="0" stop-color="#ffe08a" stop-opacity=".95"/><stop offset=".35" stop-color="#ffa62e" stop-opacity=".4"/><stop offset="1" stop-color="#ff8a1e" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="vig" cx="50%" cy="58%" r="72%">
+    <stop offset=".55" stop-color="#2a0e02" stop-opacity="0"/><stop offset="1" stop-color="#2a0e02" stop-opacity=".78"/>
+  </radialGradient>
+  <linearGradient id="fadeN" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000"/><stop offset=".22" stop-color="#fff"/></linearGradient>
+  <filter id="far"><feGaussianBlur stdDeviation="1.7"/></filter>
+  <filter id="grain" x="0" y="0" width="100%" height="100%">
+    <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="2" seed="4"/>
+    <feColorMatrix values="0 0 0 0 .28  0 0 0 0 .11  0 0 0 0 0  0 0 0 .26 0"/>
+  </filter>
+  <pattern id="weave" width="5" height="5" patternUnits="userSpaceOnUse"><path d="M0 .5H5M.5 0V5" stroke="#7a3a08" stroke-width=".5" opacity=".28"/></pattern>
+  <clipPath id="disc"><circle cx="0" cy="-192" r="70"/></clipPath>
+</defs></svg>
+
+<header class="hero" data-stop>
+  <p class="kick">The festival of lights</p>
+  <h1>Diwali</h1>
+  <p class="deva" lang="hi">दीपावली</p>
+  <p class="lede">For five days every autumn, more than a billion people light lamps against the darkest night of the year. This is the story they are remembering.</p>
+  <svg id="heroLamp" viewBox="-120 -170 240 240" role="img" aria-label="A clay oil lamp with a steady flame."></svg>
+  <p class="cue">Scroll to begin <span aria-hidden="true">↓</span></p>
+</header>
+
+<section data-stop>
+  <div class="wrap">
+    <p class="kick">Diwali in a minute</p>
+    <h2>A festival that turns the darkest night into the brightest</h2>
+    <div class="tiles">
+      <div class="tile"><h3>What</h3><p>Diwali, also called Deepavali, means “a row of lamps”. It is the biggest celebration of the year across India and for Indian families worldwide, a little like Christmas and New Year rolled into one.</p></div>
+      <div class="tile"><h3>When</h3><p>The date follows the moon, so it moves each year, always landing in October or November. The main night falls on the new moon, when the sky is at its darkest.</p></div>
+      <div class="tile"><h3>Why</h3><p>Different communities tell different origin stories. The best known comes from the Ramayana, an epic poem more than two thousand years old. The next few minutes tell it.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="story" id="story">
+  <div class="story-grid">
+    <div class="theatre" id="theatre">
+      <div class="frame"><svg id="screen" viewBox="0 -100 800 600" role="img" aria-label="A shadow-puppet screen showing scenes from the Ramayana."></svg></div>
+      <div class="dots" id="dots" aria-hidden="true"></div>
+    </div>
+    <div class="steps" id="steps">
+      <article class="step" data-stop>
+        <p class="kick">The story behind the lamps</p>
+        <h3>The Ramayana, told by lamplight</h3>
+        <p>“Ramayana” means <em>Rama’s journey</em>. The poet Valmiki composed it in Sanskrit as 24,000 verses, and it has since been retold in hundreds of versions from India to Thailand and Indonesia.</p>
+        <p class="note"><b>How it travelled</b>For centuries, villages heard it as shadow theatre: painted leather puppets held against a cloth, lit from behind by a single oil lamp. That is how it is told here.</p>
+      </article>
+      <article class="step" data-stop>
+        <p class="kick">Chapter 1 · Ayodhya</p>
+        <h3>A prince everyone loved</h3>
+        <p><b>Rama</b> <span class="pron">(RAH-muh)</span> is the eldest son of the king of Ayodhya: calm, fair, and the finest archer in the land. He wins the hand of Princess <b>Sita</b> <span class="pron">(SEE-tah)</span> by stringing a divine bow that no other suitor could even lift. The ageing king prepares to hand him the throne, and the whole city celebrates.</p>
+      </article>
+      <article class="step" data-stop>
+        <p class="kick">Chapter 2 · The exile</p>
+        <h3>A promise that cost a kingdom</h3>
+        <p>On the eve of the coronation, Queen Kaikeyi reminds the king of two wishes he once promised her. She asks for her own son, Bharata, to be crowned, and for Rama to be sent to the forest for <b>fourteen years</b>. Rama could refuse. He goes willingly, so that his father’s word is not broken. Sita and his brother <b>Lakshmana</b> <span class="pron">(LUHKSH-muh-nuh)</span> insist on going with him.</p>
+        <p class="note"><b>Worth knowing</b>Bharata is horrified and refuses the crown. He places Rama’s sandals on the throne and rules only as a caretaker until his brother returns.</p>
+      </article>
+      <article class="step" data-stop>
+        <p class="kick">Chapter 3 · The forest</p>
+        <h3>The golden deer</h3>
+        <p>For thirteen years the three live simply among the trees. Then <b>Ravana</b> <span class="pron">(RAH-vuh-nuh)</span>, the ten-headed king of Lanka, hears of Sita. He sends a magical golden deer to draw the brothers away from their hut, and while they are gone he carries Sita off across the sea in his flying chariot.</p>
+        <p class="note"><b>Worth knowing</b>Ravana is no simple monster. He is a brilliant scholar and a mighty ruler, and his ten heads are often said to stand for his vast learning. What brings him down is pride.</p>
+      </article>
+      <article class="step" data-stop>
+        <p class="kick">Chapter 4 · The search</p>
+        <h3>Hanuman’s leap</h3>
+        <p>Searching for Sita, the brothers find allies in the vanaras, a forest people usually pictured as monkeys. Their greatest hero is <b>Hanuman</b> <span class="pron">(HUH-noo-mahn)</span>, who has forgotten his own strength until an elder reminds him of it. He leaps the ocean in a single bound, finds Sita held in a garden in Lanka, and gives her Rama’s ring as proof that help is coming.</p>
+        <p class="note"><b>Worth knowing</b>Ravana’s guards catch Hanuman and set his tail alight. He uses it to set the city on fire, then leaps home with the news.</p>
+      </article>
+      <article class="step" data-stop>
+        <p class="kick">Chapter 5 · The crossing</p>
+        <h3>A bridge of stones</h3>
+        <p>An ocean still lies between Rama’s army and Lanka, so they build across it. Thousands of vanaras haul rocks and trees to the shore and lay a causeway to the island, stone by stone, in five days. Even a small squirrel is said to have helped, rolling in the sand and shaking the grains onto the bridge.</p>
+        <p class="note"><b>Worth knowing</b>A chain of shallow sandbanks really does run between India and Sri Lanka. Maps call it Adam’s Bridge. In India it is Ram Setu, “Rama’s bridge”.</p>
+      </article>
+      <article class="step" data-stop>
+        <p class="kick">Chapter 6 · Lanka</p>
+        <h3>The last arrow</h3>
+        <p>The war is long and costly. Ravana’s own brother had begged him to return Sita and was banished for saying so; he now stands with Rama. In the final duel, every head Rama strikes from Ravana grows back. At last Rama looses a single divine arrow at Ravana’s heart, and the king falls. Sita is free.</p>
+        <p class="note"><b>Worth knowing</b>This victory has its own festival, Dussehra, about twenty days before Diwali. Towering effigies of Ravana are set alight in parks and fairgrounds.</p>
+      </article>
+      <article class="step" data-stop>
+        <p class="kick">Chapter 7 · The homecoming</p>
+        <h3>The night of lamps</h3>
+        <p>The fourteen years are over. Rama, Sita and Lakshmana fly home to Ayodhya and arrive on a moonless night. To guide them in, the people set a small clay lamp, a <b>diya</b> <span class="pron">(DEE-yah)</span>, at every door, window and rooftop, until the whole city glows. Rama is crowned at last.</p>
+        <p class="note"><b>That is Diwali</b>Every year, hundreds of millions of homes repeat that welcome. The lamps say that light outlasts darkness, and that the people we love find their way home.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section data-stop>
+  <div class="wrap">
+    <p class="kick">Who’s who</p>
+    <h2>Six names worth knowing</h2>
+    <p class="lede">If you remember only these, you can follow almost any conversation about the Ramayana.</p>
+    <div class="cast" id="cast"></div>
+  </div>
+</section>
+
+<section data-stop>
+  <div class="wrap">
+    <p class="kick">The route</p>
+    <h2>A journey you can still trace on a map</h2>
+    <p class="lede">The places in the story are real towns that people visit today. End to end, the road from Ayodhya to Lanka runs close to 3,000 km, and the exiles covered most of it on foot.</p>
+    <div class="route">
+      <svg id="map" viewBox="0 0 520 510" role="img" aria-label="Map of the Indian peninsula showing the route from Ayodhya in the north, through Chitrakoot, Nashik and Hampi, to Rameswaram at the southern tip and across to Lanka."></svg>
+      <ol>
+        <li><i>1</i><div><b>Ayodhya</b><span>Rama’s home, and the city that lit the lamps.</span></div></li>
+        <li><i>2</i><div><b>Chitrakoot</b><span>The first forest home. Bharata comes here to beg Rama to return.</span></div></li>
+        <li><i>3</i><div><b>Panchavati</b><span>Today’s Nashik. Sita is carried off from here.</span></div></li>
+        <li><i>4</i><div><b>Kishkindha</b><span>Today’s Hampi. Rama meets Hanuman and the vanara army.</span></div></li>
+        <li><i>5</i><div><b>Rameswaram</b><span>The tip of India, where the bridge begins.</span></div></li>
+        <li><i>6</i><div><b>Lanka</b><span>Ravana’s island kingdom, and the end of the war.</span></div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section data-stop>
+  <div class="wrap">
+    <p class="kick">How it is celebrated</p>
+    <h2>Five days, each with its own job</h2>
+    <p class="lede">Names and customs vary by region, but most families follow a rhythm like this.</p>
+    <ol class="days">
+      <li><div><b>Dhanteras</b><span>Homes are cleaned from top to bottom and decorated. Buying something new, often gold, silver or a kitchen pot, is thought to bring luck.</span></div></li>
+      <li><div><b>Choti Diwali</b><em>Little Diwali</em><span>Rangoli, patterns made from coloured powder or flowers, are laid at the doorstep. Sweets are made and the first lamps are lit.</span></div></li>
+      <li class="main"><div><b>Diwali</b><em>The main night</em><span>Families dress up, pray to Lakshmi, the goddess of prosperity, and light every lamp in the house. Then comes the feast, the sweets and the fireworks.</span></div></li>
+      <li><div><b>Padwa</b><span>For many communities this is new year’s day. Businesses open fresh account books, and gifts pass between husbands and wives.</span></div></li>
+      <li><div><b>Bhai Dooj</b><span>A day for brothers and sisters, who visit each other, share a meal and exchange gifts.</span></div></li>
+    </ol>
+  </div>
+</section>
+
+<section data-stop>
+  <div class="wrap">
+    <p class="kick">One festival, many stories</p>
+    <h2>Rama’s return is not the only reason for the lamps</h2>
+    <p class="lede">The same night carries different meanings across India. What they share is the idea of light winning over darkness, and knowledge over ignorance.</p>
+    <div class="tiles many">
+      <div class="tile"><h3>Sikhs</h3><p>Celebrate Bandi Chhor Divas, the “day of liberation”. In 1619 Guru Hargobind walked out of prison and brought 52 captive princes out with him.</p></div>
+      <div class="tile"><h3>Jains</h3><p>Mark the night their great teacher Mahavira attained nirvana, final release from the cycle of rebirth.</p></div>
+      <div class="tile"><h3>Bengal and the east</h3><p>The night belongs to Kali, the fierce goddess who destroys evil. Her worship runs past midnight.</p></div>
+      <div class="tile"><h3>South India</h3><p>The story is Krishna’s defeat of the demon Narakasura. It is celebrated at dawn, a day before the north.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="join" id="join" data-stop>
+  <div class="wrap">
+    <p class="kick">Join in</p>
+    <h2>Light the lamps and bring them home</h2>
+    <p class="lede">You do not need to be Hindu, or Indian, to take part. Wish someone “Happy Diwali”, or try “Shubh Deepavali” <span class="pron">(shoobh dee-PAH-vuh-lee)</span>. Share something sweet. And light a lamp: tap each one below.</p>
+    <div class="lamps" id="lamps"></div>
+    <button class="all" id="lightAll" type="button">Light them all</button>
+    <div class="wish" aria-live="polite">
+      <p class="deva" lang="hi">शुभ दीपावली</p>
+      <p>Happy Diwali. May your year be full of light.</p>
+    </div>
+  </div>
+</section>
+
+<footer>Retold from Valmiki’s Ramayana. Details differ across the many versions told throughout Asia.</footer>
+<button class="auto" id="auto" type="button" aria-pressed="false">▶ Auto-play</button>
+
+<script>
+/* ================= puppet kit =================
+   Every figure is drawn feet-at-origin, facing right, about 250 units tall.
+   K is shadow, L is lamplight showing through a punched hole; the other colours are dyed, translucent leather. */
+const K='#1b0d06', L='#ffe9ad', RED='#9a1f17', TEAL='#0d6a66', OCH='#c9780f', GRN='#3f6f1f', ROSE='#a82c63', GOLD='#e3a51d';
+const st = `stroke="${K}" stroke-width="2.4" stroke-linejoin="round"`;
+const holes = (pts, r = 1.8) => pts.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${L}"/>`).join('');
+const rod = (x, y) => `<line x1="${x}" y1="${y}" x2="${x}" y2="170" stroke="${K}" stroke-width="2.2" opacity=".55"/>`;
+function limb(pts, col, w = 8){
+  const d = 'M' + pts.map(p => p.join(' ')).join(' L'), [hx, hy] = pts[pts.length - 1];
+  return `<path d="${d}" fill="none" stroke="${K}" stroke-width="${w + 4.6}" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="${d}" fill="none" stroke="${col}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="${hx}" cy="${hy}" r="${w / 2 + 2.4}" fill="${col}" ${st}/>${pts.length > 2 ? holes([pts[1]], 1.5) : ''}`;
+}
+function head(skin, o = {}){
+  const face = o.monkey
+    ? 'M-15 -178 C-16 -199 11 -203 15 -186 L15 -181 C27 -182 32 -174 30 -167 C28 -159 19 -158 15 -160 C13 -155 8 -153 2 -153 C-8 -153 -15 -164 -15 -178Z'
+    : 'M-15 -178 C-16 -199 12 -203 16 -185 L16 -180 L24 -172 L17 -169 L17 -164 C16 -157 9 -153 2 -153 C-8 -153 -15 -164 -15 -178Z';
+  const mouth = o.monkey ? 'M16 -167 L29 -169' : o.demon ? 'M6 -165 Q15 -158 23 -167' : 'M9 -162 Q13 -160 17 -163';
+  return `<rect x="-5" y="-158" width="11" height="12" fill="${skin}" ${st}/>
+    <path d="${face}" fill="${skin}" ${st}/>
+    <path d="M-15 -182 C-24 -172 -22 -158 -12 -152 L-9 -162 C-13 -168 -13 -175 -11 -182Z" fill="${K}"/>
+    <path d="M0 -178 Q7 -185 14 -178 Q7 -172 0 -178Z" fill="${L}"/><circle cx="8.5" cy="-178.4" r="2" fill="${K}"/>
+    <path d="M-1 -186 Q7 -192 15 -186" fill="none" stroke="${K}" stroke-width="1.9" stroke-linecap="round"/>
+    <path d="${mouth}" fill="none" stroke="${K}" stroke-width="${o.demon ? 3.2 : 1.7}" stroke-linecap="round"/>
+    <circle cx="-8" cy="-167" r="4.6" fill="${OCH}" ${st}/>${holes([[-8, -167]], 1.3)}`;
+}
+function crown(kind, c = OCH){
+  if (!kind) return '';
+  const low = `<path d="M-17 -191 L18 -191 L15 -201 L-14 -201Z" fill="${c}" ${st}/><path d="M-13 -201 L14 -201 L10 -215 L-9 -215Z" fill="${c}" ${st}/>${holes([[-8, -196], [0, -196], [8, -196], [-4, -208], [4, -208]])}`;
+  if (kind === 'short') return low + `<path d="M-5 -215 L6 -215 L.5 -228Z" fill="${c}" ${st}/>`;
+  return low + `<path d="M-8 -215 L9 -215 L5 -228 L-4 -228Z" fill="${c}" ${st}/><path d="M-3 -228 L4 -228 L.5 -246Z" fill="${c}" ${st}/><circle cx=".5" cy="-248" r="3.2" fill="${c}" ${st}/>${holes([[0, -221]])}`;
+}
+function hero(o){
+  const { skin, cloth, belt = OCH, top = 'tall', back = [[-24, -120], [-30, -94]], front = [[26, -122], [40, -104]], extra = '', behind = '', rods = true } = o;
+  const h = front[front.length - 1];
+  return `${behind}${rods ? rod(h[0], h[1]) : ''}${limb([[-8, -145], ...back], skin)}
+    <path d="M-22 -10 L2 -10 L14 0 L-22 0Z" fill="${skin}" ${st}/><path d="M8 -10 L26 -10 L40 0 L8 0Z" fill="${skin}" ${st}/>
+    <path d="M-17 -98 L17 -98 L31 -10 L-25 -10Z" fill="${cloth}" ${st}/>
+    <path d="M2 -98 L8 -10 M-8 -98 L-12 -10 M-23 -25 L29 -25" stroke="${K}" stroke-width="1.5" opacity=".65" fill="none"/>
+    ${holes([[-17, -17], [-8, -17], [1, -17], [10, -17], [19, -17], [-3, -62], [7, -48], [-9, -42], [13, -70], [-1, -82]])}
+    <path d="M-16 -98 C-23 -122 -21 -142 -13 -152 L13 -152 C22 -142 23 -120 17 -98Z" fill="${skin}" ${st}/>
+    <path d="M-11 -150 Q1 -126 13 -150" fill="none" stroke="${L}" stroke-width="2.2"/>${holes([[1, -134]], 2.6)}
+    <path d="M-19 -107 H19 V-96 H-19Z" fill="${belt}" ${st}/>${holes([[-10, -101.5], [0, -101.5], [10, -101.5]], 1.5)}
+    ${head(skin, o)}${crown(top)}
+    ${rods ? `<line x1="0" y1="-150" x2="0" y2="170" stroke="${K}" stroke-width="2" opacity=".4"/>` : ''}
+    ${limb([[8, -145], ...front], skin)}${extra}`;
+}
+function lady(o){
+  const { skin, cloth, back = [[-20, -122], [-22, -100]], front = [[22, -124], [34, -108]], extra = '', rods = true } = o;
+  const h = front[front.length - 1];
+  return `${rods ? rod(h[0], h[1]) : ''}${limb([[-7, -145], ...back], skin, 7)}
+    <path d="M-20 -8 L-2 -8 L8 0 L-20 0Z" fill="${skin}" ${st}/><path d="M10 -8 L26 -8 L36 0 L10 0Z" fill="${skin}" ${st}/>
+    <path d="M-15 -98 L15 -98 C22 -62 31 -32 36 -8 L-32 -8 C-27 -32 -21 -62 -15 -98Z" fill="${cloth}" ${st}/>
+    <path d="M-30 -16 L34 -16" stroke="${OCH}" stroke-width="6"/><path d="M-32 -8 L36 -8" stroke="${K}" stroke-width="2.4"/>
+    <path d="M0 -98 C2 -60 6 -34 10 -20 M-8 -98 C-10 -60 -14 -34 -18 -20" stroke="${K}" stroke-width="1.4" opacity=".6" fill="none"/>
+    ${holes([[-10, -42], [4, -54], [17, -38], [-2, -30], [-16, -62], [12, -68], [23, -28], [-22, -30], [2, -78]])}
+    <path d="M-13 -98 C-18 -120 -17 -140 -11 -152 L11 -152 C18 -140 18 -120 14 -98Z" fill="${skin}" ${st}/>
+    <path d="M-12 -152 L-1 -152 L16 -106 L16 -98 L3 -98Z" fill="${cloth}" ${st}/>
+    <path d="M-17 -184 C-31 -160 -27 -128 -21 -104" fill="none" stroke="${K}" stroke-width="7.5" stroke-linecap="round"/>${holes([[-25, -160], [-26, -140], [-24, -120]], 1.4)}
+    ${head(skin)}
+    <path d="M-15 -178 C-17 -201 12 -205 16 -187 C6 -197 -8 -193 -11 -176Z" fill="${K}"/>
+    <circle cx="-19" cy="-190" r="9.5" fill="${K}"/>${holes([[-19, -190]], 2.4)}${holes([[-25, -196], [-13, -197], [12, -192]], 1.6)}
+    ${rods ? `<line x1="0" y1="-150" x2="0" y2="170" stroke="${K}" stroke-width="2" opacity=".4"/>` : ''}
+    ${limb([[7, -145], ...front], skin, 7)}${extra}`;
+}
+function vanara(o = {}){
+  const { skin = '#c2561f', cloth = GOLD, top = 'short', back = [[-26, -122], [-32, -98]], front = [[28, -124], [42, -108]],
+    legB = [[-12, -50], [-14, -6]], legF = [[10, -52], [14, -6]], extra = '', rods = true } = o;
+  const foot = ([x, y]) => `<path d="M${x - 6} ${y} h13 l11 6 h-24z" fill="${skin}" ${st}/>`;
+  const tail = 'M-12 -98 C-64 -84 -76 -152 -50 -182 C-40 -194 -22 -188 -30 -172';
+  return `<path d="${tail}" fill="none" stroke="${K}" stroke-width="12.5" stroke-linecap="round"/><path d="${tail}" fill="none" stroke="${skin}" stroke-width="7.5" stroke-linecap="round"/>
+    ${limb([[-8, -145], ...back], skin, 9)}
+    ${limb([[-8, -92], ...legB], skin, 10)}${foot(legB[legB.length - 1])}${limb([[8, -92], ...legF], skin, 10)}${foot(legF[legF.length - 1])}
+    <path d="M-19 -100 L19 -100 L21 -68 L3 -74 L-3 -74 L-21 -68Z" fill="${cloth}" ${st}/>${holes([[-11, -84], [0, -88], [11, -84]])}
+    <path d="M-17 -98 C-27 -124 -25 -144 -14 -153 L14 -153 C26 -144 27 -122 18 -98Z" fill="${skin}" ${st}/>
+    <path d="M-11 -150 Q1 -128 13 -150" fill="none" stroke="${L}" stroke-width="2.2"/>${holes([[1, -136]], 2.6)}
+    <path d="M-20 -107 H20 V-97 H-20Z" fill="${RED}" ${st}/>
+    ${head(skin, { monkey: true })}${crown(top)}
+    ${rods ? `<line x1="0" y1="-150" x2="0" y2="170" stroke="${K}" stroke-width="2" opacity=".4"/>` : ''}
+    ${limb([[8, -145], ...front], skin, 9)}${extra}`;
+}
+function ravana(rods = true){
+  const skin = '#2e5d33';
+  const mini = (x, y, f) => `<g transform="translate(${x} ${y}) scale(${f * .58} .58) translate(0 176)">${head(skin, { demon: true })}${crown('short')}</g>`;
+  let heads = '';
+  for (let i = 5; i >= 1; i--) heads += mini(-(20 + i * 16), -180 - i * 3, -1) + (i < 5 ? mini(20 + i * 16, -180 - i * 3, 1) : '');
+  const arms = [[[56, -150], [88, -152]], [[58, -128], [90, -118]], [[50, -110], [78, -88]]];
+  return `${arms.map(a => limb([[-24, -144], ...a.map(([x, y]) => [-x, y])], skin, 9)).join('')}${arms.map(a => limb([[24, -144], ...a], skin, 9)).join('')}
+    <path d="M86 -150 L122 -208 L130 -202 L96 -146Z" fill="${L}" ${st}/><path d="M80 -146 L100 -156" stroke="${K}" stroke-width="5" stroke-linecap="round"/>
+    <path d="M-34 -10 L-6 -10 L8 0 L-34 0Z" fill="${skin}" ${st}/><path d="M14 -10 L40 -10 L56 0 L14 0Z" fill="${skin}" ${st}/>
+    <path d="M-28 -98 L28 -98 L46 -10 L-40 -10Z" fill="${RED}" ${st}/>
+    <path d="M4 -98 L12 -10 M-10 -98 L-18 -10 M-37 -26 L43 -26" stroke="${K}" stroke-width="1.6" opacity=".65" fill="none"/>
+    ${holes([[-28, -18], [-16, -18], [-4, -18], [8, -18], [20, -18], [32, -18], [-6, -60], [10, -46], [-16, -42], [20, -68], [0, -80]], 2)}
+    <path d="M-27 -98 C-38 -126 -34 -148 -21 -157 L21 -157 C35 -147 38 -124 28 -98Z" fill="${skin}" ${st}/>
+    <path d="M-17 -154 Q2 -116 21 -154" fill="none" stroke="${L}" stroke-width="2.6"/>${holes([[2, -130]], 3.4)}${holes([[-9, -138], [13, -138]], 1.8)}
+    <path d="M-31 -108 H31 V-96 H-31Z" fill="${OCH}" ${st}/>${holes([[-18, -102], [-6, -102], [6, -102], [18, -102]], 1.6)}
+    ${heads}<g transform="translate(0 -176) scale(1.22) translate(0 176)">${head(skin, { demon: true })}${crown('tall')}</g>
+    ${rods ? `<line x1="0" y1="-146" x2="0" y2="170" stroke="${K}" stroke-width="2" opacity=".4"/>` : ''}`;
+}
+function bow(hx, hy, pull){
+  const t = [hx - 20, hy - 62], b = [hx - 20, hy + 62], arc = `M${t.join(' ')} Q${hx + 20} ${hy} ${b.join(' ')}`;
+  return `<polyline points="${t.join(',')} ${pull ? pull.join(',') + ' ' : ''}${b.join(',')}" fill="none" stroke="${K}" stroke-width="1.5"/>
+    <path d="${arc}" fill="none" stroke="${K}" stroke-width="6.5" stroke-linecap="round"/><path d="${arc}" fill="none" stroke="${OCH}" stroke-width="2.4" stroke-linecap="round"/>
+    ${pull ? arrow(pull[0], hy, hx + 50 - pull[0]) : ''}`;
+}
+const arrow = (x, y, len) => `<path d="M${x} ${y} h${len}" stroke="${K}" stroke-width="2.6" stroke-linecap="round"/><path d="M${x + len + 12} ${y} l-15 -6 v12z" fill="${K}"/><path d="M${x} ${y} l-8 -5 M${x} ${y} l-8 5 M${x + 6} ${y} l-8 -5 M${x + 6} ${y} l-8 5" stroke="${K}" stroke-width="1.6"/>`;
+const mace = (hx, hy) => `<path d="M${hx - 2} ${hy + 12} L${hx + 8} ${hy - 48}" stroke="${K}" stroke-width="5" stroke-linecap="round"/><circle cx="${hx + 10}" cy="${hy - 60}" r="14" fill="${OCH}" ${st}/><path d="M${hx + 10} ${hy - 74} v-9" stroke="${K}" stroke-width="4" stroke-linecap="round"/>${holes([[hx + 10, hy - 60], [hx + 3, hy - 66], [hx + 17, hy - 66], [hx + 3, hy - 54], [hx + 17, hy - 54]], 1.7)}`;
+const boulder = (c = OCH) => `<path d="M-19 5 L-23 -8 L-12 -21 L6 -23 L21 -12 L23 3 L10 11 L-8 11Z" fill="${c}" ${st}/>${holes([[-8, -8], [5, -12], [9, 1], [-6, 3]], 1.6)}`;
+function tree(c = GRN, n = 7){
+  let leaves = '';
+  for (let i = 0; i < n; i++){
+    const a = -78 + 156 * i / (n - 1);
+    leaves += `<g transform="translate(0 -120) rotate(${a.toFixed(1)})"><path d="M0 -12 C14 -28 14 -54 0 -74 C-14 -54 -14 -28 0 -12Z" fill="${c}" ${st}/><path d="M0 -26 V-62" stroke="${L}" stroke-width="1.7" stroke-linecap="round"/></g>`;
+  }
+  return `<path d="M-10 0 C-5 -40 -7 -80 -3 -124 L3 -124 C7 -80 5 -40 10 0Z" fill="${K}"/>
+    <path d="M0 -62 C-14 -76 -22 -86 -30 -104 M0 -80 C14 -90 20 -98 27 -112" stroke="${K}" stroke-width="4" fill="none" stroke-linecap="round"/>
+    ${leaves}<circle cx="0" cy="-121" r="10" fill="${OCH}" ${st}/>${holes([[0, -121]], 2.6)}`;
+}
+function palace(base = K){
+  const dome = (x, y, s, c) => `<g transform="translate(${x} ${y}) scale(${s})"><path d="M-30 0 C-46 -28 -18 -42 0 -66 C18 -42 46 -28 30 0Z" fill="${c}" ${st}/><path d="M0 -66 V-84" stroke="${base}" stroke-width="3.4"/><circle cx="0" cy="-87" r="4.2" fill="${base}"/>${holes([[0, -22], [-13, -12], [13, -12]], 2.4)}</g>`;
+  const arch = (x, y, w, h) => `<path d="M${x - w / 2} ${y} V${y - h + w / 2} Q${x - w / 2} ${y - h} ${x} ${y - h - 6} Q${x + w / 2} ${y - h} ${x + w / 2} ${y - h + w / 2} V${y}Z" fill="${L}"/>`;
+  let dots = [];
+  for (let x = -160; x <= 160; x += 16) if (Math.abs(x) > 84) dots.push([x, -110]);
+  return `<rect x="-170" y="-120" width="340" height="120" fill="${base}"/><rect x="-90" y="-182" width="180" height="64" fill="${base}"/>
+    <rect x="-202" y="-150" width="42" height="150" fill="${base}"/><rect x="160" y="-150" width="42" height="150" fill="${base}"/>
+    ${dome(0, -182, 1.5, RED)}${dome(-122, -120, .9, OCH)}${dome(122, -120, .9, OCH)}${dome(-181, -150, .64, TEAL)}${dome(181, -150, .64, TEAL)}
+    ${arch(0, 0, 46, 84)}${arch(-68, 0, 30, 60)}${arch(68, 0, 30, 60)}${arch(-126, 0, 26, 52)}${arch(126, 0, 26, 52)}
+    ${arch(-46, -130, 18, 30)}${arch(0, -130, 18, 30)}${arch(46, -130, 18, 30)}${arch(-181, -62, 14, 32)}${arch(181, -62, 14, 32)}
+    ${holes(dots, 2.2)}<rect x="-216" y="-6" width="432" height="9" fill="${base}"/>`;
+}
+const hut = () => `<path d="M-42 0 V-54 H42 V0Z" fill="${OCH}" ${st}/><path d="M-13 0 V-30 Q0 -44 13 -30 V0Z" fill="${K}"/>
+  <path d="M-62 -48 L0 -108 L62 -48Z" fill="${K}"/><path d="M-36 -58 L0 -92 L36 -58 M-18 -58 L0 -76 L18 -58" fill="none" stroke="${L}" stroke-width="1.6" stroke-linecap="round"/>`;
+function deer(){
+  return `${limb([[-22, -52], [-30, -26], [-24, -4]], GOLD, 5)}${limb([[20, -50], [28, -26], [22, -4]], GOLD, 5)}
+    <ellipse cx="0" cy="-62" rx="38" ry="19" fill="${GOLD}" ${st}/>
+    ${limb([[-14, -50], [-12, -24], [-18, -4]], GOLD, 5)}${limb([[12, -50], [8, -24], [14, -4]], GOLD, 5)}
+    <path d="M22 -70 L40 -114 L57 -104 L40 -54Z" fill="${GOLD}" ${st}/>
+    <path d="M36 -119 C44 -130 63 -126 74 -110 L67 -101 C56 -99 44 -101 38 -106Z" fill="${GOLD}" ${st}/>
+    <path d="M39 -121 L28 -137 L46 -128Z" fill="${GOLD}" ${st}/>
+    <path d="M47 -126 C44 -144 51 -152 47 -168 M47 -148 L60 -160 M48 -140 L36 -154" stroke="${K}" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+    <path d="M-36 -68 L-50 -80 L-40 -58Z" fill="${GOLD}" ${st}/><circle cx="57" cy="-115" r="2.4" fill="${K}"/>
+    ${holes([[-20, -66], [-8, -55], [4, -69], [17, -60], [-4, -73], [-26, -55], [34, -84], [38, -97]], 2.3)}`;
+}
+const squirrel = () => `<path d="M-10 -4 C-30 -4 -32 -34 -15 -34 C-5 -34 -6 -22 -13 -22" fill="none" stroke="${K}" stroke-width="7" stroke-linecap="round"/>
+  <ellipse cx="0" cy="-8" rx="12" ry="7.5" fill="${OCH}" ${st}/><circle cx="12" cy="-14" r="6" fill="${OCH}" ${st}/><path d="M9 -19 l1 -7 l5 5z" fill="${K}"/>${holes([[14, -15]], 1.3)}`;
+function vimana(){
+  const bust = x => `<path d="M${x - 10} 4 Q${x} -18 ${x + 10} 4Z" fill="${K}"/><circle cx="${x}" cy="-18" r="7.5" fill="${K}"/><path d="M${x - 6} -24 L${x} -38 L${x + 6} -24Z" fill="${K}"/>`;
+  const neck = 'M84 -4 C108 -22 92 -52 108 -64 C118 -71 128 -62 121 -54';
+  return `<path d="M-40 4 C-78 -34 -116 -36 -134 -18 C-106 -20 -86 -8 -70 10Z" fill="${OCH}" ${st}/><path d="M-76 -10 C-92 -20 -108 -22 -120 -18" fill="none" stroke="${L}" stroke-width="1.6"/>
+    ${[-44, -15, 15, 44].map(x => `<path d="M${x} 4 V-52" stroke="${K}" stroke-width="4.5"/>`).join('')}${bust(-29)}${bust(0)}${bust(29)}
+    <path d="M-58 -52 H58 L42 -68 H-42Z" fill="${OCH}" ${st}/><path d="M-36 -68 H36 L21 -85 H-21Z" fill="${TEAL}" ${st}/><path d="M-15 -85 H15 L0 -110Z" fill="${OCH}" ${st}/>
+    <path d="M0 -110 V-128" stroke="${K}" stroke-width="2.6"/><path d="M0 -128 l-24 6 l24 7z" fill="${RED}" ${st}/>${holes([[-30, -60], [-10, -60], [10, -60], [30, -60], [-12, -76], [12, -76]])}
+    <path d="${neck}" fill="none" stroke="${K}" stroke-width="12" stroke-linecap="round"/><path d="${neck}" fill="none" stroke="${GOLD}" stroke-width="7" stroke-linecap="round"/><path d="M119 -60 l17 5 l-15 6z" fill="${K}"/>${holes([[115, -60]], 1.5)}
+    <path d="M-94 -8 Q0 64 94 -8 Q0 22 -94 -8Z" fill="${RED}" ${st}/>${holes([[-52, 15], [-27, 25], [0, 29], [27, 25], [52, 15]], 2.3)}`;
+}
+const diya = (x, y, s = 1, d = 0) => `<g transform="translate(${x} ${y}) scale(${s})"><g class="lamp" style="--d:${d}s"><circle cy="-16" r="50" fill="url(#lampglow)"/>
+  <path class="flame" style="animation-delay:${-d * 3}s" d="M0 -36 C9 -21 7 -9 0 -3 C-7 -9 -9 -21 0 -36Z" fill="#ffe9a0"/></g><path d="M-20 -3 C-20 13 20 13 20 -3Z" fill="#b5531c" stroke="${K}" stroke-width="1.5"/></g>`;
+function waves(y, c, off = 0, b = ''){
+  let d = `M${-70 + off} ${y}`;
+  for (let x = -70 + off; x < 880; x += 44) d += ' a22 15 0 0 1 44 0';
+  return `<path class="tide ${b}" d="${d} V520 H${-70 + off}Z" fill="${c}" ${st}/>`;
+}
+function ground(c = K){
+  let d = 'M-10 442';
+  for (let x = -10; x < 810; x += 20) d += ' a10 5 0 0 1 20 0';
+  return `<path d="${d} V510 H-10Z" fill="${c}"/>`;
+}
+function toran(){
+  let s = `<rect width="800" height="15" fill="${K}"/>`;
+  for (let x = 20; x < 800; x += 40){
+    s += `<path d="M${x} 13 C${x + 9} 25 ${x + 9} 42 ${x} 56 C${x - 9} 42 ${x - 9} 25 ${x} 13Z" fill="${GRN}" ${st}/><path d="M${x} 20 V47" stroke="${L}" stroke-width="1.3"/>
+      <circle cx="${x + 20}" cy="21" r="8.5" fill="${OCH}" ${st}/>${holes([[x + 20, 21]], 2.2)}`;
+  }
+  return s;
+}
+/* Place a puppet: feet at (x,y). far = further from the cloth, so softer and paler. */
+function put(x, y, s, art, o = {}){
+  return `<g transform="translate(${x} ${y})${o.rot ? ` rotate(${o.rot})` : ''} scale(${o.flip ? -s : s} ${s})"${o.far ? ' filter="url(#far)" opacity=".62"' : ''}>
+    <g class="pup" style="--d:${o.d || 0}s"><g class="${o.cls ?? 'sway'}" style="animation-delay:-${((x * 7) % 40) / 10}s">${art}</g></g></g>`;
+}
+
+/* ================= cast ================= */
+const RAMA = { skin: '#27779b', cloth: GOLD, belt: RED }, LAKSH = { skin: '#e2b24c', cloth: TEAL }, SITA = { skin: '#ecbb5c', cloth: ROSE };
+const rama = (o = {}) => hero({ ...RAMA, ...o });
+const lakshmana = (o = {}) => hero({ ...LAKSH, top: 'short', ...o });
+const sita = (o = {}) => lady({ ...SITA, ...o });
+const carrier = c => vanara({ top: '', rods: false, back: [[-22, -168], [-10, -204]], front: [[24, -170], [14, -204]], extra: `<g transform="translate(2 -224)">${boulder(c)}</g>` });
+
+/* ================= scenes (800 wide, y from -100 to 500, ground at y 442) ================= */
+const SCENES = [
+  /* 0: title card */
+  () => `${put(120, 442, 1.55, tree(GRN), { d: .1 })}${put(680, 442, 1.55, tree(TEAL), { d: .2, flip: true })}
+    <g transform="translate(0 -30)"><circle cx="400" cy="232" r="118" fill="none" stroke="${K}" stroke-width="2" opacity=".5"/>
+    ${holes(Array.from({ length: 36 }, (_, i) => [+(400 + 132 * Math.cos(i / 18 * Math.PI)).toFixed(1), +(232 + 132 * Math.sin(i / 18 * Math.PI)).toFixed(1)]), 3)}
+    <text x="400" y="262" text-anchor="middle" font-family="Tiro Devanagari Hindi, Hind, serif" font-size="96" fill="${K}">रामायण</text>
+    <text x="400" y="306" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="19" letter-spacing="7" fill="${K}">RAMA’S JOURNEY</text></g>
+    ${ground()}`,
+  /* 1: Ayodhya. Rama with the bow, Sita with the garland. */
+  () => `${put(400, 442, 1.12, palace(), { far: true, cls: '' })}
+    ${put(232, 442, 1.26, rama({ extra: bow(40, -104) }), { d: .15 })}
+    ${put(566, 442, 1.2, sita({ front: [[24, -128], [40, -118]], extra: `<circle cx="46" cy="-98" r="19" fill="none" stroke="${K}" stroke-width="9"/><circle cx="46" cy="-98" r="19" fill="none" stroke="${ROSE}" stroke-width="5" stroke-dasharray="3 4"/>` }), { d: .35, flip: true })}
+    ${ground()}`,
+  /* 2: the exile. Three walkers leave the city for the forest. */
+  () => `${put(134, 442, .42, palace(), { far: true, cls: '' })}${put(330, 442, 1.75, tree(TEAL), { far: true })}${put(630, 442, 1.9, tree(GRN), { far: true })}
+    ${put(196, 442, 1.1, lakshmana({ front: [[26, -124], [36, -104]], extra: bow(36, -104) }), { d: .45, cls: 'walk' })}
+    ${put(352, 442, 1.08, sita(), { d: .3, cls: 'walk' })}
+    ${put(506, 442, 1.2, rama({ extra: bow(40, -104) }), { d: .15, cls: 'walk' })}
+    ${put(716, 442, 1.5, tree(GRN), { d: .1 })}${ground()}`,
+  /* 3: the golden deer runs one way, Ravana arrives from the other. */
+  () => `${put(250, 442, 1.7, tree(GRN), { far: true })}${put(290, 442, 1.1, hut(), { cls: '' })}
+    ${put(138, 442, 1.12, deer(), { flip: true, cls: 'hop', d: .1 })}
+    ${put(404, 442, 1.08, sita({ back: [[-22, -160], [-26, -186]], front: [[24, -162], [30, -188]] }), { d: .3 })}
+    ${put(592, 442, 1.34, ravana(), { flip: true, d: .55 })}${ground()}`,
+  /* 4: Hanuman's leap from India to Lanka. */
+  () => `<path d="M84 96 a27 27 0 1 0 30 44 a22 22 0 1 1 -30 -44Z" fill="#fff8dc" stroke="${K}" stroke-width="2"/>
+    <path class="dash" d="M96 318 Q380 20 664 330" fill="none" stroke="${K}" stroke-width="2.6" stroke-dasharray="3 11" stroke-linecap="round" opacity=".5"/>
+    ${put(676, 404, .5, palace(), { far: true, cls: '' })}${put(566, 404, .95, tree(GRN), { d: .2 })}${put(612, 404, .56, sita({ rods: false }), { flip: true, d: .4, cls: '' })}
+    <path d="M520 404 Q650 372 800 392 V500 H520Z" fill="${K}"/>
+    <path d="M0 322 H84 Q118 330 132 404 V500 H0Z" fill="${K}"/><path d="M0 322 H84 Q100 324 108 336 H0Z" fill="${GRN}"/>
+    ${put(262, 348, 1.12, vanara({ rods: false, front: [[16, -178], [22, -220]], back: [[-28, -124], [-38, -98]], legB: [[-18, -52], [-10, -12]], legF: [[20, -60], [4, -30]] }), { rot: 62, cls: 'fly', d: .3 })}
+    ${waves(408, TEAL)}${waves(438, '#2a3780', 22, 'b')}${waves(468, K)}`,
+  /* 5: building the bridge. */
+  () => { let stones = ''; for (let i = 0; i < 9; i++) stones += `<g transform="translate(${168 + i * 42} ${398 - (i % 2) * 5})">${boulder(i % 2 ? '#8a4a12' : OCH)}</g>`;
+    return `${put(716, 410, .44, palace(), { far: true, cls: '' })}<path d="M610 412 Q716 386 810 404 V500 H610Z" fill="${K}" filter="url(#far)" opacity=".6"/>
+    <path d="M0 384 H120 Q150 390 162 420 V500 H0Z" fill="${K}"/><path d="M0 384 H120 Q136 386 142 396 H0Z" fill="${GRN}"/>
+    ${put(92, 386, .98, rama({ front: [[32, -142], [58, -140]], rods: false }), { d: .1 })}
+    ${stones}
+    ${put(256, 394, .7, carrier(OCH), { d: .3, cls: 'walk' })}${put(382, 392, .7, carrier('#8a4a12'), { d: .45, cls: 'walk' })}
+    ${put(498, 394, .72, vanara({ top: '', rods: false, front: [[30, -128], [44, -100]], back: [[-14, -122], [18, -104]], extra: `<g transform="translate(46 -80)">${boulder(OCH)}</g>` }), { d: .6 })}
+    ${put(198, 392, 1, squirrel(), { cls: 'hop', d: .7 })}
+    ${waves(414, TEAL)}${waves(442, '#2a3780', 22, 'b')}${waves(470, K)}`; },
+  /* 6: the duel. */
+  () => `<rect class="full" y="-100" width="800" height="600" fill="${RED}" opacity=".2"/>
+    ${put(112, 442, .98, vanara({ front: [[30, -150], [36, -182]], extra: mace(36, -182) }), { d: .4 })}
+    ${put(226, 442, 1.26, rama({ front: [[32, -147], [56, -147]], back: [[-30, -138], [2, -147]], extra: bow(56, -147, [2, -147]) }), { d: .15 })}
+    <g transform="translate(330 257)"><g class="shot">${arrow(0, 0, 44)}</g></g>
+    ${[[400, 12], [450, -9], [500, 16]].map(([x, r]) => `<g transform="translate(${x} 444) rotate(${-70 + r})">${arrow(-40, 0, 30)}</g>`).join('')}
+    ${put(582, 442, 1.4, ravana(), { flip: true, d: .3, cls: 'reel' })}${ground()}`,
+  /* 7: the homecoming. The screen goes dark and the lamps take over. */
+  () => { let a = 11; const rnd = () => (a = (a * 9301 + 49297) % 233280) / 233280, N = '#1c1233';
+    let stars = '', lamps = '', n = 0;
+    for (let i = 0; i < 130; i++) stars += `<circle cx="${(rnd() * 800).toFixed(0)}" cy="${(-490 + rnd() * 740).toFixed(0)}" r="${i % 4 ? 1.1 : 1.8}" fill="${L}" opacity="${(.35 + rnd() * .5).toFixed(2)}"/>`;
+    const row = (x0, x1, y, step, s) => { for (let x = x0; x <= x1; x += step) lamps += diya(x, y, s, (n++ % 23) * .07); };
+    row(26, 780, 458, 47, .5); row(242, 618, 306, 47, .34); row(336, 524, 236, 47, .3);
+    row(26, 130, 348, 52, .32); row(676, 780, 364, 52, .32); row(170, 216, 272, 46, .26); row(588, 634, 272, 46, .26);
+    const house = (x, w, h) => `<rect x="${x}" y="${442 - h}" width="${w}" height="${h}" fill="${N}"/><path d="M${x + w / 2 - 9} 442 v-26 q9 -12 18 0 v26z" fill="${L}"/><rect x="${x + 10}" y="${442 - h + 16}" width="12" height="16" rx="6" fill="${L}"/><rect x="${x + w - 22}" y="${442 - h + 16}" width="12" height="16" rx="6" fill="${L}"/>`;
+    return `<rect class="full" y="-100" width="800" height="600" fill="#0a0820" opacity=".94"/>${stars}
+      <circle cx="170" cy="150" r="130" fill="url(#lampglow)" opacity=".5"/>${put(170, 168, .72, vimana(), { cls: 'fly', d: .2 })}
+      ${house(10, 136, 92)}${house(662, 132, 76)}${put(430, 442, 1.1, palace(N), { cls: '' })}${ground('#0f0a1c')}${lamps}`; }
+];
+
+const screen = document.getElementById('screen');
+screen.innerHTML = `<rect class="full" y="-100" width="800" height="600" fill="url(#cloth)"/><rect class="full" y="-100" width="800" height="600" fill="url(#weave)"/><rect class="full" y="-100" width="800" height="600" filter="url(#grain)"/>
+  <circle class="flicker" cx="400" cy="330" r="270" fill="url(#lampglow)" opacity=".8"/>
+  <g id="zoom">${SCENES.map((f, i) => `<g class="scene" data-s="${i}">${f()}</g>`).join('')}</g>
+  <rect class="full" y="-100" width="800" height="600" fill="url(#vig)" pointer-events="none"/><g id="top"></g>`;
+const scenes = [...screen.querySelectorAll('.scene')];
+
+/* The stage takes whatever shape the layout gives it (about half the screen). Scenes stay pinned to the bottom;
+   extra height becomes sky, framed by a scalloped arch and hanging lamps that grow with it. */
+function topArt(extra){
+  const A = 250 + extra * .2, B = 70 + extra * .55, n = 5;
+  let d = `M0 0 H${A.toFixed(0)}`;
+  for (let i = 1; i <= n; i++){
+    const t = Math.PI / 2 * (1 - i / n), x = A - A * Math.cos(t), y = B - B * Math.sin(t);
+    const px = A - A * Math.cos(t + Math.PI / 2 / n), py = B - B * Math.sin(t + Math.PI / 2 / n), r = Math.hypot(x - px, y - py) * .62;
+    d += ` A${r.toFixed(1)} ${r.toFixed(1)} 0 0 1 ${x.toFixed(1)} ${y.toFixed(1)}`;
+  }
+  const corner = `<path d="${d}Z" fill="${K}" stroke="${OCH}" stroke-width="3" stroke-linejoin="round"/>${holes([[26, 34 + B * .12], [58, 30], [26, 34 + B * .34]], 3)}`;
+  const hang = (x, len) => `<path d="M${x} 14 V${len}" stroke="${K}" stroke-width="2.4" stroke-dasharray="6 3"/><g transform="translate(${x} ${len})">
+    <circle cy="16" r="52" fill="url(#lampglow)"/><path d="M0 0 L-17 27 M0 0 L17 27" stroke="${K}" stroke-width="1.7"/><circle r="3.4" fill="${K}"/>
+    <path class="flame" d="M0 3 C8 14 6 22 0 27 C-6 22 -8 14 0 3Z" fill="#fff6d0" stroke="${K}" stroke-width="1.4"/>
+    <path d="M-20 27 C-20 46 20 46 20 27Z" fill="${OCH}" ${st}/>${holes([[-9, 34], [0, 37], [9, 34]], 1.7)}<path d="M0 42 v10" stroke="${K}" stroke-width="3"/><circle cy="54" r="3.4" fill="${K}"/></g>`;
+  const lamps = extra >= 120 ? hang(150, 40 + extra * .42) + hang(650, 40 + extra * .42) + hang(400, 30 + extra * .25) : '';
+  return `${corner}<g transform="translate(800 0) scale(-1 1)">${corner}</g>${lamps}${toran()}`;
+}
+const frameEl = screen.parentElement, topG = screen.querySelector('#top'), zoomG = screen.querySelector('#zoom');
+function fit(){
+  const r = frameEl.getBoundingClientRect(); if (!r.width || !r.height) return;
+  const want = 800 * r.height / r.width, h = Math.round(Math.max(500, Math.min(1000, want))), top = 500 - h;
+  screen.setAttribute('viewBox', `0 ${top} 800 ${h}`);
+  screen.setAttribute('preserveAspectRatio', want < 500 ? 'xMidYMax meet' : 'xMidYMax slice');
+  screen.querySelectorAll('.full').forEach(e => { e.setAttribute('y', top); e.setAttribute('height', h); });
+  /* A tall stage also brings the puppets a little closer; scenes keep their outer 45 units clear for this. */
+  const k = 1 + Math.min(.12, (h - 500) / 2500);
+  zoomG.setAttribute('transform', `translate(400 500) scale(${k.toFixed(3)}) translate(-400 -500)`);
+  topG.setAttribute('transform', `translate(0 ${top})`); topG.innerHTML = topArt(h - 500);
+}
+new ResizeObserver(fit).observe(frameEl);
+const dots = document.getElementById('dots');
+dots.innerHTML = scenes.map(() => '<i></i>').join('');
+const steps = [...document.querySelectorAll('.step')];
+let active = -1;
+function show(i){
+  if (i === active) return;
+  active = i;
+  scenes.forEach((s, k) => s.classList.toggle('on', k === i));
+  steps.forEach((s, k) => s.classList.toggle('on', k === i));
+  [...dots.children].forEach((d, k) => d.classList.toggle('on', k === i));
+}
+
+/* The chapter whose text sits on the "reading line" owns the screen.
+   Phones: the line is in the space under the pinned theatre. Wide screens: mid-viewport. */
+const theatre = document.getElementById('theatre');
+const wide = matchMedia('(min-width:900px)');
+const readingLine = () => { if (wide.matches) return innerHeight * .5; const b = Math.max(0, theatre.getBoundingClientRect().bottom); return b + (innerHeight - b) * .45; };
+let queued = false;
+function track(){
+  queued = false;
+  const y = readingLine(); let best = 0, gap = Infinity;
+  steps.forEach((s, i) => { const r = s.getBoundingClientRect(), g = y < r.top ? r.top - y : y > r.bottom ? y - r.bottom : 0; if (g < gap){ gap = g; best = i; } });
+  show(best);
+}
+const queue = () => { if (!queued){ queued = true; requestAnimationFrame(track); } };
+addEventListener('scroll', queue, { passive: true }); addEventListener('resize', queue);
+
+const params = new URLSearchParams(location.search);
+if (params.has('scene')){ document.body.classList.add('solo'); fit(); show(Math.min(scenes.length - 1, +params.get('scene') || 0)); removeEventListener('scroll', queue); removeEventListener('resize', queue); }
+else track();
+
+/* ================= hero lamp ================= */
+const bigLamp = lit => `<circle class="gl" cx="0" cy="-70" r="118" fill="url(#lampglow)"/>
+  <g class="fl"><g class="flame"><path d="M0 -150 C30 -100 24 -52 0 -34 C-24 -52 -30 -100 0 -150Z" fill="#e7622a"/><path d="M0 -118 C17 -88 14 -56 0 -42 C-14 -56 -17 -88 0 -118Z" fill="#ffb340"/><path d="M0 -90 C7 -74 6 -58 0 -48 C-6 -58 -7 -74 0 -90Z" fill="#fff4c8"/></g></g>
+  <g class="bowl"><path d="M-92 -30 C-96 34 -44 56 0 56 C44 56 96 34 92 -30Z" fill="#b5531c" stroke="#1b0d06" stroke-width="3"/>
+  <ellipse cx="0" cy="-30" rx="92" ry="15" fill="#8f3d12" stroke="#1b0d06" stroke-width="3"/><ellipse cx="0" cy="-30" rx="62" ry="8" fill="${lit ? '#ffb340' : '#5a2a0e'}"/>
+  ${holes([[-60, 2], [-40, 16], [-20, 24], [0, 27], [20, 24], [40, 16], [60, 2]], 3.4)}${holes([[-30, 40], [-10, 45], [10, 45], [30, 40]], 2.2)}</g>`;
+document.getElementById('heroLamp').innerHTML = bigLamp(true);
+
+/* ================= who's who ================= */
+const CAST = [
+  ['Rama', 'RAH-muh', 'The hero', 'Prince of Ayodhya, honoured by Hindus as the god Vishnu born in human form. He stands for duty and fairness.', rama({ rods: false })],
+  ['Sita', 'SEE-tah', 'The heart', 'Rama’s wife and a princess in her own right. She chooses exile over comfort and never bends to Ravana.', sita({ rods: false })],
+  ['Lakshmana', 'LUHKSH-muh-nuh', 'The brother', 'Gives up palace life to guard Rama and Sita through all fourteen years in the forest.', lakshmana({ rods: false })],
+  ['Hanuman', 'HUH-noo-mahn', 'The ally', 'Son of the wind god and one of the best-loved figures in India: great strength, used entirely for others.', vanara({ rods: false })],
+  ['Ravana', 'RAH-vuh-nuh', 'The rival', 'Ten-headed king of Lanka. Learned, powerful and undone by his own pride.', `<g transform="translate(-2 -76) scale(.62)">${ravana(false)}</g>`],
+  ['Bharata', 'BHUH-ruh-tuh', 'The caretaker', 'The brother who was handed the throne and refused to sit on it.', hero({ skin: '#3f8f7c', cloth: ROSE, top: 'short', rods: false })]
+];
+document.getElementById('cast').innerHTML = CAST.map(([n, p, role, text, art]) => `<div class="card">
+  <svg viewBox="-70 -262 140 140" aria-hidden="true"><circle cx="0" cy="-192" r="70" fill="url(#cloth)"/><g clip-path="url(#disc)">${art}</g></svg>
+  <h3>${n} <span class="pron">(${p})</span></h3><p class="role">${role}</p><p>${text}</p></div>`).join('');
+
+/* ================= map =================
+   Physical coastline only, drawn from longitude/latitude; the north fades out rather than drawing any border. */
+const P = ([lon, lat]) => [((lon - 67.5) * 20).toFixed(1), ((30.5 - lat) * 20).toFixed(1)];
+const COAST = [[67.5, 24.0], [68.5, 23.6], [69.0, 22.9], [70.3, 22.9], [69.0, 22.3], [69.6, 21.6], [70.4, 20.9], [71.0, 20.7], [72.1, 21.2], [72.3, 22.2], [72.7, 21.6], [72.8, 21.1],
+  [72.8, 19.0], [73.3, 17.0], [73.8, 15.5], [74.8, 12.9], [75.8, 11.2], [76.3, 9.9], [76.9, 8.5], [77.55, 8.08], [78.2, 8.8], [79.0, 9.25], [79.35, 9.25], [79.2, 10.3], [79.85, 10.8], [79.8, 11.9],
+  [80.3, 13.1], [80.1, 15.3], [81.0, 16.0], [82.3, 16.7], [83.3, 17.7], [85.0, 19.3], [86.4, 20.0], [87.0, 20.8], [87.0, 21.5], [88.0, 21.7], [89.0, 21.7], [90.5, 22.0], [91.2, 22.6], [91.8, 22.3], [92.3, 20.8], [93.6, 19.5],
+  [93.6, 30.6], [67.5, 30.6]];
+const ISLAND = [[79.8, 9.7], [80.3, 9.8], [81.2, 8.6], [81.8, 7.3], [81.7, 6.5], [81.0, 6.05], [80.2, 6.0], [79.9, 6.8], [79.8, 8.0], [79.95, 8.9]];
+const STOPS = [[82.2, 26.8], [80.9, 25.2], [73.8, 20.0], [76.46, 15.33], [79.3, 9.29], [80.75, 7.6]].map(P);
+const poly = pts => 'M' + pts.map(p => P(p).join(' ')).join(' L') + 'Z';
+document.getElementById('map').innerHTML = `<rect width="520" height="510" fill="url(#cloth)"/><rect width="520" height="510" fill="url(#weave)"/>
+  <mask id="north"><rect width="520" height="510" fill="url(#fadeN)"/></mask>
+  <g mask="url(#north)"><path d="${poly(COAST)}" fill="#a85f14" fill-opacity=".72" ${st}/></g><path d="${poly(ISLAND)}" fill="#a85f14" fill-opacity=".72" ${st}/>
+  <text x="62" y="352" font-family="Fraunces, Georgia, serif" font-style="italic" font-size="15" fill="${K}" opacity=".7">Arabian Sea</text>
+  <text x="372" y="322" font-family="Fraunces, Georgia, serif" font-style="italic" font-size="15" fill="${K}" opacity=".7">Bay of Bengal</text>
+  <path class="dash" d="M${STOPS.map(p => p.join(' ')).join(' L')}" fill="none" stroke="${K}" stroke-width="3" stroke-dasharray="2 9" stroke-linecap="round"/>
+  ${STOPS.map(([x, y], i) => `<circle cx="${x}" cy="${y}" r="13" fill="${i === 5 ? RED : K}" stroke="${L}" stroke-width="2"/><text x="${x}" y="${+y + 5}" text-anchor="middle" font-family="Hind, sans-serif" font-weight="600" font-size="14" fill="${L}">${i + 1}</text>`).join('')}
+  <rect width="520" height="510" fill="url(#vig)"/>`;
+
+/* ================= light the lamps ================= */
+const join = document.getElementById('join'), lampBox = document.getElementById('lamps');
+lampBox.innerHTML = Array.from({ length: 7 }, (_, i) => `<button type="button" aria-pressed="false" aria-label="Lamp ${i + 1}"><svg viewBox="-120 -170 240 240" aria-hidden="true">${bigLamp(true)}</svg></button>`).join('');
+const lampBtns = [...lampBox.children];
+function sparks(){
+  const box = document.createElement('div'); box.className = 'sparks';
+  let a = 5; const rnd = () => (a = (a * 9301 + 49297) % 233280) / 233280;
+  for (let i = 0; i < 44; i++) box.innerHTML += `<i style="left:${(rnd() * 100).toFixed(1)}%;--t:${(2.6 + rnd() * 2.6).toFixed(2)}s;--d:${(rnd() * 1.6).toFixed(2)}s;--dx:${((rnd() - .5) * 120).toFixed(0)}px"></i>`;
+  document.body.append(box); setTimeout(() => box.remove(), 6500);
+}
+function lampState(){
+  const n = lampBtns.filter(b => b.getAttribute('aria-pressed') === 'true').length, done = n === lampBtns.length;
+  join.style.setProperty('--lit', n / lampBtns.length);
+  if (done && !join.classList.contains('done')) sparks();
+  join.classList.toggle('done', done);
+}
+const setLamp = (b, on) => { b.setAttribute('aria-pressed', on); lampState(); };
+lampBtns.forEach(b => b.addEventListener('click', () => setLamp(b, b.getAttribute('aria-pressed') !== 'true')));
+const lightAll = () => lampBtns.forEach((b, i) => setTimeout(() => setLamp(b, true), i * 260));
+document.getElementById('lightAll').addEventListener('click', lightAll);
+
+/* ================= auto-play (for an unattended screen): ?tv or the button ================= */
+const stops = [...document.querySelectorAll('[data-stop]')], autoBtn = document.getElementById('auto');
+let at = -1, timer = null;
+function go(i){
+  at = i % stops.length;
+  const el = stops[at], r = el.getBoundingClientRect();
+  if (at === 0) lampBtns.forEach(b => setLamp(b, false));
+  scrollTo({ top: el.classList.contains('step') ? scrollY + r.top + r.height / 2 - readingLine() : scrollY + r.top, behavior: 'smooth' });
+  if (el === join) setTimeout(lightAll, 2500);
+}
+function autoplay(on){
+  clearInterval(timer); timer = null;
+  autoBtn.setAttribute('aria-pressed', on); autoBtn.textContent = on ? '❚❚ Auto-play' : '▶ Auto-play';
+  if (on){ go(at + 1); timer = setInterval(() => go(at + 1), 12000); }
+}
+autoBtn.addEventListener('click', () => autoplay(!timer));
+if (params.has('tv')) autoplay(true);
+</script>
+</html>
